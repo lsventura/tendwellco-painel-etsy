@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etsy Nicho Tracker — TendWellCo</title>
+<link rel="stylesheet" href="design-system/tokens.css">
+<link rel="stylesheet" href="design-system/components.css">
+<style>
+  .price-chart { display: flex; flex-direction: column; gap: var(--space-4); }
+</style>
+</head>
+<body class="jds-root">
+<div class="jds-shell">
+
+  <div class="jds-row-between jds-topbar">
+    <div>
+      <div class="jds-title">Etsy Nicho Tracker — TendWellCo</div>
+      <p class="jds-subtitle">Painel pra acompanhar potencial de nicho no Etsy e validar os kits que já produzimos</p>
+      <p class="jds-meta">Última atualização: 18/09/2026 · pesquisa manual (sem API de bestseller ao vivo — ver rodapé)</p>
+    </div>
+    <button class="jds-btn" id="theme-toggle" type="button">Modo escuro</button>
+  </div>
+
+  <div class="jds-alert jds-alert-warning" style="margin-bottom:var(--space-5)">
+    <span class="jds-alert-icon">…</span>
+    <div>
+      <div class="jds-alert-title">Verificação do Payoneer em andamento</div>
+      <div class="jds-alert-body">A loja <b>TendWellCo</b> está em <b>Vacation Mode</b> desde 18/09/2026. O Leonardo já enviou ao Payoneer as informações pedidas (segmento de negócio, volume, data da 1ª transação) e está aguardando retorno — não é mais um bloqueio parado, é aguardar o processamento deles. Enquanto isso não volta, nenhum kit pode ser vendido.</div>
+    </div>
+  </div>
+
+  <div class="jds-stat-row" style="margin-bottom:var(--space-5)">
+    <div class="jds-stat-tile">
+      <div class="jds-stat-label">Produto atual</div>
+      <div class="jds-stat-value">5 kits</div>
+      <div class="jds-stat-sub">Medication Tracker — ADHD, Cuidador, Doença crônica, Enfermagem, Pet. 78 páginas cada.</div>
+    </div>
+    <div class="jds-stat-tile">
+      <div class="jds-stat-label">Demanda do termo</div>
+      <div class="jds-stat-value"><span class="jds-badge jds-badge-good"><span class="jds-dot"></span>Validada</span></div>
+      <div class="jds-stat-sub">8+ páginas de mercado no Etsy p/ "medication tracker". Concorrente com 668 avaliações, nota 4.9.</div>
+    </div>
+    <div class="jds-stat-tile">
+      <div class="jds-stat-label">Posicionamento recomendado</div>
+      <div class="jds-stat-value">Bundle nichado</div>
+      <div class="jds-stat-sub">Bundle de 10-15+ páginas ($18-28) converte mais que folha avulsa ($1.75-$4) em 2026.</div>
+    </div>
+    <div class="jds-stat-tile">
+      <div class="jds-stat-label">Bloqueio de venda</div>
+      <div class="jds-stat-value"><span class="jds-badge jds-badge-warning"><span class="jds-dot"></span>Em análise</span></div>
+      <div class="jds-stat-sub">Payoneer processando verificação enviada pelo Leonardo em 18/09.</div>
+    </div>
+  </div>
+
+  <div class="jds-card">
+    <h2>Onde nosso produto se encaixa na faixa de preço do mercado</h2>
+    <p class="jds-card-note">Faixas observadas em anúncios reais do Etsy (pesquisa em 18/09/2026). A faixa do nosso kit é <b>sugerida</b> (tracejada) — ainda não publicada, porque a loja está pausada.</p>
+    <div class="price-chart" id="price-chart"></div>
+    <div class="jds-legend" style="margin-top:var(--space-4)">
+      <span class="jds-legend-item"><span class="jds-legend-swatch" style="background:var(--series-1)"></span>Mercado geral (observado)</span>
+      <span class="jds-legend-item"><span class="jds-legend-swatch is-pending" style="color:var(--series-1)"></span>Nosso kit (sugerido, ainda não listado)</span>
+    </div>
+  </div>
+
+  <div class="jds-card">
+    <h2>Comparação de nichos</h2>
+    <p class="jds-card-note">Nichos de maior demanda em printables/planejadores no Etsy pra 2026, cruzados com o que nosso motor (<code>gerador.mjs</code> + <code>montar-pdf.mjs</code>) já sabe produzir hoje.</p>
+    <table class="jds-table">
+      <thead>
+        <tr>
+          <th>Nicho</th>
+          <th>Sinal de demanda</th>
+          <th>Preço observado</th>
+          <th>Competição</th>
+          <th>Já produzimos?</th>
+          <th>Veredito</th>
+        </tr>
+      </thead>
+      <tbody id="niche-table-body"></tbody>
+    </table>
+  </div>
+
+  <div class="jds-card">
+    <h2>Próximos passos (em ordem)</h2>
+    <ol class="jds-steps">
+      <li><b>Acompanhar o retorno do Payoneer</b> — já foi enviado tudo que pediram, agora é aguardar a confirmação pra sair do Vacation Mode.</li>
+      <li><b>Publicar os 5 kits já prontos</b> com preço de bundle premium ($18-28), não no piso de folha avulsa ($2-4) — a estrutura de 78 páginas já sustenta esse posicionamento.</li>
+      <li><b>Priorizar ADHD e Pet</b> nos títulos/tags de lançamento — os dois nichos citados nominalmente como tendência de alta demanda em 2026 nas fontes pesquisadas.</li>
+      <li><b>Considerar 1-2 variações novas</b> reaproveitando o mesmo motor: "idoso/cuidado geriátrico" e "pós-parto" têm boa aderência ao formato atual, mas ainda não foram validadas.</li>
+      <li><b>Não expandir agora</b> pra wall art, casamento ou templates Canva — demanda alta, mas exigem um motor de produção diferente do que já temos.</li>
+    </ol>
+  </div>
+
+  <div class="jds-card">
+    <h2>Como manter esse painel atualizado</h2>
+    <p class="jds-card-note">
+      Não existe API pública de "mais vendidos" do Etsy — a Etsy Open API v3 não expõe contagem de vendas por concorrente, e o app já cadastrado (chave em <code>etsy/.env</code>) nunca completou o fluxo OAuth (sem token salvo em <code>etsy/.oauth_state.json</code>), então hoje não dá pra puxar nem os dados da nossa própria loja automaticamente.
+      Até isso mudar, a atualização é manual: peça pra eu repetir a pesquisa a cada 4-6 semanas nos termos "medication tracker Etsy", "printable planner trends [ano]" e "Etsy digital download niche low competition [ano]", e eu atualizo as tabelas acima.
+    </p>
+    <div class="jds-sources">
+      Fontes desta rodada:<br>
+      <a href="https://www.outfy.com/blog/top-selling-digital-products-on-etsy/" target="_blank" rel="noopener">27 Top Selling Digital Products on Etsy in 2026 — Outfy</a><br>
+      <a href="https://www.insightagent.app/trends/etsy-printables" target="_blank" rel="noopener">Best Selling Printables on Etsy 2026 — Insight Agent</a><br>
+      <a href="https://resellready.co/blogs/news/digital-downloads-that-sell-on-etsy-in-2026" target="_blank" rel="noopener">Digital Downloads That Sell on Etsy in 2026 — Resell Ready</a><br>
+      <a href="https://www.etsy.com/market/medication_tracker" target="_blank" rel="noopener">Medication Tracker — mercado Etsy</a><br>
+      <a href="https://www.etsy.com/listing/1625082585/editable-medication-tracker-printable" target="_blank" rel="noopener">Editable Medication Tracker (planNgo, 668 avaliações) — Etsy</a><br>
+      <a href="https://www.inkfluenceai.com/blog/best-digital-product-niches-2026" target="_blank" rel="noopener">31 Trending Digital Products Actually Selling in 2026 — Inkfluence AI</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="design-system/jds.js"></script>
+<script>
+  jds.initThemeToggle(document.getElementById('theme-toggle'));
+
+  jds.renderRangeChart(document.getElementById('price-chart'), [
+    { label: 'Folha avulsa', sub: 'ex.: "medication tracker printable", 1 página', min: 1.75, max: 4.00, pending: false,
+      detail: 'Faixa observada em anúncios avulsos de medication tracker no Etsy.' },
+    { label: 'Bundle nichado (tendência geral)', sub: 'printables em geral, 10-15 páginas', min: 18, max: 28, pending: false,
+      detail: 'Faixa reportada como padrão de bundle vencedor em printables no Etsy pra 2026.' },
+    { label: 'Bundle premium (concorrência)', sub: 'templates mais completos do nicho', min: 18, max: 31.99, pending: false,
+      detail: 'Topo de preço encontrado em anúncios mais completos de medication tracker.' },
+    { label: 'Nosso kit (78 páginas)', sub: 'sugestão — ainda não listado na loja', min: 19, max: 27, pending: true,
+      detail: 'Faixa sugerida por analogia ao bundle premium do nicho — a loja está em Vacation Mode, então não há preço publicado ainda.' },
+  ], { max: 32 });
+
+  const niches = [
+    { nome: 'Medication / Health Tracker (nosso)', demanda: 'Alta', demandaStatus: 'good', preco: '$1.75–$4 avulso · até $31.99 bundle', competicao: 'Média', produzimos: 'Sim — 5 variações prontas', veredito: 'Validado, falta vender', veredictoStatus: 'good' },
+    { nome: 'Planner com foco em ADHD', demanda: 'Alta', demandaStatus: 'good', preco: '$18–$28 (bundle)', competicao: 'Média', produzimos: 'Sim — variação ADHD já existe', veredito: 'Validado, priorizar', veredictoStatus: 'good' },
+    { nome: 'Pet tracker / planner', demanda: 'Alta', demandaStatus: 'good', preco: '$18–$28 (bundle)', competicao: 'Baixa-Média', produzimos: 'Sim — variação Pet já existe', veredito: 'Validado, oportunidade extra', veredictoStatus: 'good' },
+    { nome: 'Cuidador / Doença crônica', demanda: 'Média-Alta', demandaStatus: 'good', preco: '$18–$28 (bundle)', competicao: 'Média', produzimos: 'Sim — variações já existem', veredito: 'Validado', veredictoStatus: 'good' },
+    { nome: 'Enfermagem / profissional de saúde', demanda: 'Média', demandaStatus: 'warning', preco: 'Não mapeado a fundo', competicao: 'Baixa', produzimos: 'Sim — variação Nursing já existe', veredito: 'Potencial B2B, validar melhor', veredictoStatus: 'warning' },
+    { nome: 'Templates de casamento', demanda: 'Alta', demandaStatus: 'good', preco: '$15–$50', competicao: 'Alta', produzimos: 'Não — motor é de tabelas, não de convites', veredito: 'Fora do escopo atual', veredictoStatus: 'critical' },
+    { nome: 'Wall art / pôster digital', demanda: 'Alta', demandaStatus: 'good', preco: '$5–$15', competicao: 'Muito alta', produzimos: 'Não', veredito: 'Baixo fit com nosso motor', veredictoStatus: 'critical' },
+    { nome: 'Templates Canva p/ redes sociais', demanda: 'Alta', demandaStatus: 'good', preco: 'Varia bastante', competicao: 'Alta', produzimos: 'Não', veredito: 'Exige outra ferramenta (Canva)', veredictoStatus: 'critical' },
+  ];
+
+  jds.renderTable(document.getElementById('niche-table-body'), niches, [
+    { key: 'nome', type: 'name' },
+    { key: 'demanda', type: 'badge' },
+    { key: 'preco', type: 'text' },
+    { key: 'competicao', type: 'text' },
+    { key: 'produzimos', type: 'text' },
+    { key: 'veredito', type: 'badge' },
+  ]);
+</script>
+
+</body>
+</html>

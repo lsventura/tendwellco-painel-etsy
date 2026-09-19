@@ -1,0 +1,137 @@
+/*
+  Jarvis Design System — componentes
+  Consome as variáveis de tokens.css. Requer a classe .jds-root no elemento raiz.
+*/
+
+.jds-root, .jds-root * { box-sizing: border-box; }
+.jds-root { font-family: var(--font-sans); color: var(--text-primary); background: var(--page-plane); }
+.jds-root h1, .jds-root h2, .jds-root h3 { font-family: var(--font-sans); margin: 0; }
+.jds-root p { margin: 0; }
+.jds-root a { color: var(--text-secondary); }
+.jds-root code { font-family: ui-monospace, "SF Mono", Consolas, monospace; background: var(--gridline); border-radius: 4px; padding: 1px 5px; font-size: 0.9em; }
+
+.jds-shell { max-width: 980px; margin: 0 auto; padding: var(--space-8) var(--space-5) var(--space-12); }
+.jds-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+.jds-row { display: flex; align-items: center; gap: var(--space-3); }
+.jds-row-between { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
+
+.jds-topbar { margin-bottom: var(--space-6); }
+.jds-title { font-size: var(--text-xl); font-weight: 650; letter-spacing: -0.01em; margin-bottom: 4px; }
+.jds-subtitle { color: var(--text-secondary); font-size: var(--text-sm); }
+.jds-meta { color: var(--text-muted); font-size: var(--text-xs); margin-top: var(--space-2); }
+
+.jds-btn {
+  font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 600;
+  border-radius: var(--radius-md); padding: 7px 13px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary);
+  transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+.jds-btn:hover { color: var(--text-primary); }
+.jds-btn:focus-visible { outline: 2px solid var(--series-1); outline-offset: 2px; }
+.jds-btn-primary { background: var(--series-1); border-color: var(--series-1); color: #fff; }
+.jds-btn-primary:hover { background: var(--seq-500); border-color: var(--seq-500); color: #fff; }
+
+.jds-card {
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6); box-shadow: var(--shadow-1);
+}
+.jds-card + .jds-card { margin-top: var(--space-4); }
+.jds-card h2 { font-size: var(--text-md); font-weight: 650; margin-bottom: 2px; }
+.jds-card-note { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.55; margin-bottom: var(--space-4); }
+.jds-card-note:last-child { margin-bottom: 0; }
+
+.jds-alert {
+  display: flex; gap: var(--space-3); align-items: flex-start;
+  border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border); background: var(--surface-1);
+}
+.jds-alert-icon {
+  flex: none; width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: #fff; margin-top: 1px;
+}
+.jds-alert-title { font-size: var(--text-sm); font-weight: 650; margin-bottom: 3px; }
+.jds-alert-body { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.55; }
+.jds-alert-good .jds-alert-icon { background: var(--status-good); }
+.jds-alert-warning .jds-alert-icon { background: var(--status-warning); color: #4a3600; }
+.jds-alert-serious .jds-alert-icon { background: var(--status-serious); }
+.jds-alert-critical .jds-alert-icon { background: var(--status-critical); }
+
+.jds-badge {
+  display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 8px;
+  border-radius: var(--radius-pill); font-size: var(--text-2xs); font-weight: 650;
+  white-space: nowrap; border: 1px solid transparent;
+}
+.jds-badge .jds-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.jds-badge-good { color: var(--status-good-text); }
+.jds-badge-warning { color: var(--status-warning-text); }
+.jds-badge-serious { color: var(--status-serious-text); }
+.jds-badge-critical { color: var(--status-critical-text); }
+.jds-badge-good .jds-dot { background: var(--status-good); }
+.jds-badge-warning .jds-dot { background: var(--status-warning); }
+.jds-badge-serious .jds-dot { background: var(--status-serious); }
+.jds-badge-critical .jds-dot { background: var(--status-critical); }
+
+.jds-stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.jds-stat-tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-4); }
+.jds-stat-label { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: var(--space-2); font-weight: 600; }
+.jds-stat-value { font-size: var(--text-lg); font-weight: 650; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; font-variant-numeric: proportional-nums; }
+.jds-stat-delta { font-size: var(--text-xs); font-weight: 650; }
+.jds-stat-delta-good { color: var(--success-text); }
+.jds-stat-delta-bad { color: var(--status-critical-text); }
+.jds-stat-sub { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.5; }
+
+.jds-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.jds-table th, .jds-table td { text-align: left; padding: 10px 11px; border-bottom: 1px solid var(--gridline); vertical-align: top; }
+.jds-table th { color: var(--text-muted); font-weight: 650; font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.03em; }
+.jds-table td { color: var(--text-secondary); }
+.jds-table td.jds-cell-name { color: var(--text-primary); font-weight: 600; }
+.jds-table td.jds-cell-num { font-variant-numeric: tabular-nums; text-align: right; }
+.jds-table tbody tr:hover td { background: color-mix(in srgb, var(--series-1) 5%, transparent); }
+
+.jds-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); font-size: var(--text-xs); color: var(--text-secondary); }
+.jds-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.jds-legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.jds-legend-swatch.is-pending { background-image: repeating-linear-gradient(135deg, currentColor 0 3px, transparent 3px 6px); opacity: 0.6; }
+
+.jds-range-row { display: grid; grid-template-columns: 200px 1fr 96px; align-items: center; gap: var(--space-3); }
+.jds-range-label { font-size: var(--text-xs); color: var(--text-secondary); }
+.jds-range-label small { display: block; color: var(--text-muted); font-size: 10.5px; margin-top: 2px; }
+.jds-range-track { position: relative; height: 10px; background: var(--gridline); border-radius: 5px; }
+.jds-range-fill { position: absolute; top: 0; height: 10px; border-radius: 5px; background: var(--series-1); cursor: default; }
+.jds-range-fill.is-pending { background: repeating-linear-gradient(135deg, var(--series-1) 0 4px, transparent 4px 8px); opacity: 0.55; }
+.jds-range-value { font-size: var(--text-xs); text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+
+.jds-bar-track { display: flex; flex-direction: column; gap: var(--space-3); }
+.jds-bar-row { display: grid; grid-template-columns: 140px 1fr 56px; align-items: center; gap: var(--space-3); }
+.jds-bar-label { font-size: var(--text-xs); color: var(--text-secondary); }
+.jds-bar-track-bg { position: relative; height: 24px; background: var(--gridline); border-radius: 4px; overflow: hidden; }
+.jds-bar-fill { position: absolute; top: 2px; bottom: 2px; left: 0; border-radius: 4px; background: var(--series-1); }
+.jds-bar-value { font-size: var(--text-xs); text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+
+.jds-filter-row { display: flex; gap: var(--space-2); margin-bottom: var(--space-5); flex-wrap: wrap; }
+.jds-filter-pill { font-size: var(--text-2xs); font-weight: 600; padding: 6px 12px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary); cursor: pointer; }
+.jds-filter-pill.is-active { background: var(--series-1); border-color: var(--series-1); color: #fff; }
+
+.jds-steps { margin: 0; padding-left: 20px; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.9; }
+.jds-steps b { color: var(--text-primary); }
+
+.jds-sources { font-size: var(--text-2xs); color: var(--text-muted); line-height: 1.9; }
+
+.jds-tooltip {
+  position: fixed; pointer-events: none; background: var(--text-primary); color: var(--surface-1);
+  font-size: var(--text-2xs); padding: 6px 10px; border-radius: var(--radius-sm); opacity: 0;
+  transform: translateY(4px); transition: opacity var(--duration-fast) var(--ease-standard);
+  z-index: 80; max-width: 240px; line-height: 1.45; box-shadow: var(--shadow-2);
+}
+.jds-tooltip.is-visible { opacity: 1; }
+.jds-tooltip b { color: #fff; }
+
+.jds-empty { text-align: center; padding: var(--space-10) var(--space-5); color: var(--text-muted); font-size: var(--text-sm); }
+
+@media (max-width: 760px) {
+  .jds-stat-row { grid-template-columns: repeat(2, 1fr); }
+  .jds-range-row, .jds-bar-row { grid-template-columns: 1fr; gap: 4px; }
+  .jds-range-value, .jds-bar-value { text-align: left; }
+  .jds-table { font-size: var(--text-xs); }
+}
