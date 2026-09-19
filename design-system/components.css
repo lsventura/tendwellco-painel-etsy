@@ -40,7 +40,7 @@
 .jds-row { display: flex; align-items: center; gap: var(--space-3); }
 .jds-row-between { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
 
-.jds-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+.jds-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-4); margin-top: var(--space-4); }
 .jds-grid-2 > .jds-card + .jds-card { margin-top: 0; }
 
 .jds-topbar { margin-bottom: var(--space-6); }
@@ -189,5 +189,6 @@
   .jds-range-value, .jds-bar-value { text-align: right; }
   .jds-table { font-size: var(--text-sm); }
   .jds-table-wrap { margin: 0 calc(var(--space-6) * -1); padding: 0 var(--space-6); }
+  .jds-card-secondary .jds-table-wrap { margin: 0 calc(var(--space-5) * -1); padding: 0 var(--space-5); }
   .jds-card-note, .jds-alert-body, .jds-steps { font-size: var(--text-sm); }
 }
