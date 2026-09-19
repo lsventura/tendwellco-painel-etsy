@@ -3,7 +3,13 @@
   Fonte da verdade de cor: skill "dataviz" (references/palette.md).
   Não editar valores de cor aqui sem rodar scripts/validate_palette.js do skill —
   esses hexs já passaram no validador (CVD, contraste, banda de luminosidade).
+  Ver design-system/README.md pra regras de uso.
 */
+
+/* Inter via Google Fonts — único sans do sistema (troca o system-ui "cru" por
+   algo desenhado, mas continua sendo UM sans só, sem serifada/display — regra
+   do skill dataviz). system-ui fica como fallback caso o import falhe. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap');
 
 .jds-root {
   color-scheme: light;
@@ -37,7 +43,7 @@
   --status-serious-text:  #9c4a2c;
   --status-critical-text: #b23232;
 
-  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
   --text-2xs: 11px; --text-xs: 12px; --text-sm: 13px; --text-base: 14.5px;
   --text-md: 16px; --text-lg: 19px; --text-xl: 24px; --text-2xl: 32px; --text-hero: 48px;
 
