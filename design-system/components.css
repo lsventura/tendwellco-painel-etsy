@@ -158,6 +158,13 @@
 .jds-copy-btn:hover { color: var(--text-primary); border-color: var(--series-1); }
 .jds-copy-btn.is-copied { color: var(--status-good-text); border-color: var(--status-good); }
 
+.jds-spark-wrap { display: flex; flex-direction: column; gap: 3px; cursor: default; }
+.jds-spark-svg { display: block; }
+.jds-spark-line { fill: none; stroke: var(--text-muted); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.jds-spark-dot { fill: var(--series-1); }
+.jds-spark-range { font-size: var(--text-2xs); color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.jds-spark-empty { font-size: var(--text-2xs); color: var(--text-muted); font-style: italic; white-space: nowrap; }
+
 .jds-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); font-size: var(--text-xs); color: var(--text-secondary); }
 .jds-legend-item { display: inline-flex; align-items: center; gap: 6px; }
 .jds-legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }

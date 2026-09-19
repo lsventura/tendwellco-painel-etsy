@@ -11,7 +11,7 @@
 </style>
 </head>
 <body class="jds-root">
-<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v4 — 19/09/2026 — painel gerenciador com abas, não rolagem única</div>
+<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v5 — 19/09/2026 — volume de busca mês a mês por oportunidade</div>
 <div class="jds-shell">
 
   <div class="jds-row-between jds-topbar">
@@ -102,16 +102,16 @@
   <div data-tab-panel="oportunidades" hidden>
   <div class="jds-card jds-card-opportunity">
     <div class="jds-card-head"><span id="head-icon-opportunity"></span><h2>Mais oportunidades — nichos novos pesquisados agora</h2></div>
-    <p class="jds-card-note">Candidatos a nova listagem usando o mesmo motor (<code>gerador.mjs</code>) — dado real extraído em 19/09/2026, mesma fonte da tabela acima. "Blood pressure log" foi o melhor sinal de volume de toda a pesquisa até agora.</p>
+    <p class="jds-card-note">Candidatos a nova listagem usando o mesmo motor (<code>gerador.mjs</code>) — dado real extraído em 19/09/2026, mesma fonte da tabela acima. "Blood pressure log" foi o melhor sinal de volume de toda a pesquisa até agora. Passa o mouse (ou toca) no gráfico pra ver o número de cada mês.</p>
     <div class="jds-table-wrap">
     <table class="jds-table">
       <thead>
         <tr>
           <th>Nicho</th>
           <th>Buscas/mês</th>
+          <th>Tendência mês a mês (ago/25–jul/26)</th>
           <th>Concorrência</th>
           <th>Preço mediano</th>
-          <th>Tendência 12m</th>
           <th>Veredito</th>
           <th>Título pronto</th>
         </tr>
@@ -232,16 +232,37 @@
   jds.wireStatusFilter(document.getElementById('keyword-filter'), document.getElementById('keyword-table-body'));
 
   var opportunities = [
-    { nome: 'Blood Pressure Log', buscas: '12.100', concorrencia: '~1.900 (baixa p/ o volume)', preco: '$2,46 mediano', tendencia: 'estável, pico mar/26', veredito: 'Prioridade máxima', veredictoStatus: 'good', titulo: 'Blood Pressure Log Printable | Daily BP & Heart Rate Tracker, Health Journal | Digital Download PDF' },
-    { nome: 'Postpartum Planner', buscas: '590', concorrencia: '1.556 (média)', preco: 'Não coletado', tendencia: '-19% em 12m', veredito: 'Não priorizar agora', veredictoStatus: 'critical', titulo: null },
-    { nome: 'Elderly Care Planner', buscas: 'Sem dado confiável', concorrencia: '1.347 (moderada)', preco: '$7,49 mediano', tendencia: 'Sem dado', veredito: 'Validar melhor antes de produzir', veredictoStatus: 'warning', titulo: null },
+    {
+      nome: 'Blood Pressure Log', buscas: '12.100', concorrencia: '~1.900 (baixa p/ o volume)', preco: '$2,46 mediano',
+      veredito: 'Prioridade máxima', veredictoStatus: 'good',
+      titulo: 'Blood Pressure Log Printable | Daily BP & Heart Rate Tracker, Health Journal | Digital Download PDF',
+      mensal: [
+        { mes: 'ago/25', valor: 12100 }, { mes: 'set/25', valor: 12100 }, { mes: 'out/25', valor: 12100 },
+        { mes: 'nov/25', valor: 9900 }, { mes: 'dez/25', valor: 9900 },
+        { mes: 'jan/26', valor: 12100 }, { mes: 'fev/26', valor: 12100 }, { mes: 'mar/26', valor: 14800 },
+        { mes: 'abr/26', valor: 12100 }, { mes: 'mai/26', valor: 12100 }, { mes: 'jun/26', valor: 12100 }, { mes: 'jul/26', valor: 12100 },
+      ],
+    },
+    {
+      nome: 'Postpartum Planner', buscas: '590', concorrencia: '1.556 (média)', preco: 'Não coletado',
+      veredito: 'Não priorizar agora', veredictoStatus: 'critical', titulo: null,
+      mensal: [
+        { mes: 'ago/25', valor: 590 }, { mes: 'set/25', valor: 590 }, { mes: 'out/25', valor: 590 }, { mes: 'nov/25', valor: 590 },
+        { mes: 'dez/25', valor: 480 }, { mes: 'jan/26', valor: 720 }, { mes: 'fev/26', valor: 480 }, { mes: 'mar/26', valor: 590 },
+        { mes: 'abr/26', valor: 590 }, { mes: 'mai/26', valor: 590 }, { mes: 'jun/26', valor: 480 }, { mes: 'jul/26', valor: 480 },
+      ],
+    },
+    {
+      nome: 'Elderly Care Planner', buscas: 'Sem dado confiável', concorrencia: '1.347 (moderada)', preco: '$7,49 mediano',
+      veredito: 'Validar melhor antes de produzir', veredictoStatus: 'warning', titulo: null, mensal: null,
+    },
   ];
   jds.renderTable(document.getElementById('opportunity-table-body'), opportunities, [
     { key: 'nome', type: 'name' },
     { key: 'buscas', type: 'text' },
+    { key: 'mensal', type: 'sparkline' },
     { key: 'concorrencia', type: 'text' },
     { key: 'preco', type: 'text' },
-    { key: 'tendencia', type: 'text' },
     { key: 'veredito', type: 'badge' },
     { key: 'titulo', type: 'copy' },
   ], { statusAttr: 'veredictoStatus' });

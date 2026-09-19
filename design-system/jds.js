@@ -107,6 +107,54 @@
     }
   }
 
+  function fmtNum(n) { return n.toLocaleString("pt-BR"); }
+  function buildSparkline(monthly) {
+    var wrap = document.createElement("div");
+    wrap.className = "jds-spark-wrap";
+    if (!monthly || !monthly.length) {
+      wrap.classList.add("jds-spark-empty");
+      wrap.textContent = "Sem dado mês a mês";
+      return wrap;
+    }
+    var values = monthly.map(function (m) { return m.valor; });
+    var min = Math.min.apply(null, values), max = Math.max.apply(null, values);
+    var w = 110, h = 26, pad = 3;
+    var range = max - min || 1;
+    var pts = values.map(function (v, i) {
+      var x = pad + (i / (values.length - 1)) * (w - pad * 2);
+      var y = h - pad - ((v - min) / range) * (h - pad * 2);
+      return [x, y];
+    });
+    var svgNS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    svg.setAttribute("width", String(w));
+    svg.setAttribute("height", String(h));
+    svg.classList.add("jds-spark-svg");
+    var polyline = document.createElementNS(svgNS, "polyline");
+    polyline.setAttribute("points", pts.map(function (p) { return p.join(","); }).join(" "));
+    polyline.setAttribute("class", "jds-spark-line");
+    svg.appendChild(polyline);
+    var last = pts[pts.length - 1];
+    var dot = document.createElementNS(svgNS, "circle");
+    dot.setAttribute("cx", String(last[0]));
+    dot.setAttribute("cy", String(last[1]));
+    dot.setAttribute("r", "2.6");
+    dot.setAttribute("class", "jds-spark-dot");
+    svg.appendChild(dot);
+    wrap.appendChild(svg);
+
+    var rangeLabel = document.createElement("div");
+    rangeLabel.className = "jds-spark-range";
+    rangeLabel.textContent = min === max ? fmtNum(min) + "/mês" : fmtNum(min) + "–" + fmtNum(max) + "/mês";
+    wrap.appendChild(rangeLabel);
+
+    var detail = monthly.map(function (m) { return m.mes + ": " + fmtNum(m.valor); }).join(" · ");
+    attachTooltip(wrap, "Buscas por mês (ago/25–jul/26)", detail);
+    wrap.tabIndex = 0;
+    return wrap;
+  }
+
   function badge(status, label) {
     var span = document.createElement("span");
     span.className = "jds-badge jds-badge-" + status;
@@ -212,6 +260,8 @@
           } else {
             td.textContent = "—";
           }
+        } else if (col.type === "sparkline") {
+          td.appendChild(buildSparkline(row[col.key]));
         } else {
           td.textContent = row[col.key];
         }
