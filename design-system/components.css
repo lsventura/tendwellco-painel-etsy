@@ -39,6 +39,11 @@
 .jds-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-4); margin-top: var(--space-4); }
 .jds-grid-2 > .jds-card + .jds-card { margin-top: 0; }
 
+.jds-dashboard { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-4); }
+.jds-dashboard-main, .jds-dashboard-side { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.jds-dashboard-main > .jds-card + .jds-card,
+.jds-dashboard-side > .jds-card + .jds-card { margin-top: 0; }
+
 .jds-topbar { margin-bottom: var(--space-6); }
 .jds-topbar.jds-row-between { flex-direction: column; align-items: stretch; gap: var(--space-3); }
 .jds-topbar.jds-row-between > button { align-self: flex-start; }
@@ -207,4 +212,11 @@
   .jds-table-wrap { margin: 0 calc(var(--space-6) * -1); padding: 0 var(--space-6); }
   .jds-card-secondary .jds-table-wrap { margin: 0 calc(var(--space-5) * -1); padding: 0 var(--space-5); }
   .jds-card-note, .jds-alert-body, .jds-steps { font-size: var(--text-sm); }
+}
+
+@media (min-width: 900px) {
+  .jds-shell { max-width: 1180px; }
+  .jds-dashboard { flex-direction: row; align-items: flex-start; }
+  .jds-dashboard-main { flex: 2; }
+  .jds-dashboard-side { flex: 1; position: sticky; top: var(--space-6); }
 }
