@@ -1,11 +1,14 @@
 /*
   Jarvis Design System — helpers
-  Sem build step, sem dependências.
+  Sem build step, sem dependências. Import direto: <script src="jds.js"></script>
+  Regra do skill dataviz (interaction.md): nomes/labels vindos de dados são
+  "untrusted" — sempre textContent, nunca innerHTML com valor interpolado.
 */
 (function (global) {
   "use strict";
 
-  var ICON_PATHS = {
+  // ---------- ícones (Lucide, MIT license — markup fixo, nunca leva dado externo) ----------
+  const ICON_PATHS = {
     check: '<path d="M20 6 9 17l-5-5"/>',
     "triangle-alert": '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
     "circle-x": '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>',
@@ -20,11 +23,14 @@
     copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
     check2: '<path d="M20 6 9 17l-5-5"/>',
     sparkle: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>',
+    "chevron-down": '<path d="m6 9 6 6 6-6"/>',
   };
+  // Markup é sempre um dos paths fixos acima (nunca dado externo) — seguro usar innerHTML aqui.
   function icon(name, cls) {
-    var span = document.createElement("span");
+    const span = document.createElement("span");
     span.className = "jds-icon" + (cls ? " " + cls : "");
-    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute("viewBox", "0 0 24 24");
     svg.innerHTML = ICON_PATHS[name] || "";
     span.appendChild(svg);
@@ -32,25 +38,24 @@
     return span;
   }
 
-  function initThemeToggle(button, opts) {
-    opts = opts || {};
-    var onLabel = opts.onLabel || "Modo escuro";
-    var offLabel = opts.offLabel || "Modo claro";
-    var root = document.documentElement;
+  // ---------- tema ----------
+  function initThemeToggle(button, { onLabel = "Modo escuro", offLabel = "Modo claro" } = {}) {
+    const root = document.documentElement;
     function isDark() {
       return root.getAttribute("data-theme") === "dark" ||
         (!root.getAttribute("data-theme") && global.matchMedia("(prefers-color-scheme: dark)").matches);
     }
     function sync() { button.textContent = isDark() ? offLabel : onLabel; }
-    button.addEventListener("click", function () {
-      var current = root.getAttribute("data-theme");
+    button.addEventListener("click", () => {
+      const current = root.getAttribute("data-theme");
       root.setAttribute("data-theme", current === "dark" ? "light" : "dark");
       sync();
     });
     sync();
   }
 
-  var tooltipEl = null;
+  // ---------- tooltip singleton ----------
+  let tooltipEl = null;
   function getTooltip() {
     if (!tooltipEl) {
       tooltipEl = document.createElement("div");
@@ -59,11 +64,12 @@
     }
     return tooltipEl;
   }
+  // title: string; detail: string — inseridos via textContent, nunca innerHTML.
   function showTooltip(evt, title, detail) {
-    var el = getTooltip();
+    const el = getTooltip();
     el.textContent = "";
     if (title) {
-      var b = document.createElement("b");
+      const b = document.createElement("b");
       b.textContent = title;
       el.appendChild(b);
     }
@@ -75,31 +81,34 @@
     el.classList.add("is-visible");
   }
   function moveTooltip(evt) {
-    var el = getTooltip();
+    const el = getTooltip();
     el.style.left = evt.clientX + 14 + "px";
     el.style.top = evt.clientY + 14 + "px";
   }
-  function hideTooltip() { if (tooltipEl) tooltipEl.classList.remove("is-visible"); }
+  function hideTooltip() {
+    if (tooltipEl) tooltipEl.classList.remove("is-visible");
+  }
   function attachTooltip(el, title, detail) {
-    el.addEventListener("mouseenter", function (e) { showTooltip(e, title, detail); });
+    el.addEventListener("mouseenter", (e) => showTooltip(e, title, detail));
     el.addEventListener("mousemove", moveTooltip);
     el.addEventListener("mouseleave", hideTooltip);
-    el.addEventListener("focus", function (e) { showTooltip(e, title, detail); });
+    el.addEventListener("focus", (e) => showTooltip(e, title, detail));
     el.addEventListener("blur", hideTooltip);
   }
 
+  // ---------- copiar pro clipboard (com feedback visual — guideline #34 ui-ux-pro-max) ----------
   function copyText(text, button) {
-    var originalHTML = button.innerHTML;
-    function done() {
+    const originalHTML = button.innerHTML;
+    const done = () => {
       button.textContent = "";
       button.appendChild(icon("check2", "jds-icon-sm"));
       button.appendChild(document.createTextNode(" Copiado"));
       button.classList.add("is-copied");
-      setTimeout(function () {
+      setTimeout(() => {
         button.innerHTML = originalHTML;
         button.classList.remove("is-copied");
       }, 1800);
-    }
+    };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(done).catch(done);
     } else {
@@ -107,93 +116,130 @@
     }
   }
 
+  // ---------- sparkline mês a mês (12 pontos) — faixa min–max sempre visível
+  // como texto (nunca só no hover); o detalhe mês a mês abre num dropdown ao
+  // clicar/tocar (hover sozinho não funciona em touch, então não pode ser o
+  // único jeito de ver o dado — mesma regra do skill dataviz pra tooltip). ----------
   function fmtNum(n) { return n.toLocaleString("pt-BR"); }
   function buildSparkline(monthly) {
-    var wrap = document.createElement("div");
+    const wrap = document.createElement("div");
     wrap.className = "jds-spark-wrap";
     if (!monthly || !monthly.length) {
       wrap.classList.add("jds-spark-empty");
       wrap.textContent = "Sem dado mês a mês";
       return wrap;
     }
-    var values = monthly.map(function (m) { return m.valor; });
-    var min = Math.min.apply(null, values), max = Math.max.apply(null, values);
-    var w = 110, h = 26, pad = 3;
-    var range = max - min || 1;
-    var pts = values.map(function (v, i) {
-      var x = pad + (i / (values.length - 1)) * (w - pad * 2);
-      var y = h - pad - ((v - min) / range) * (h - pad * 2);
+    const values = monthly.map((m) => m.valor);
+    const min = Math.min(...values), max = Math.max(...values);
+    const w = 110, h = 26, pad = 3;
+    const range = max - min || 1;
+    const pts = values.map((v, i) => {
+      const x = pad + (i / (values.length - 1)) * (w - pad * 2);
+      const y = h - pad - ((v - min) / range) * (h - pad * 2);
       return [x, y];
     });
-    var svgNS = "http://www.w3.org/2000/svg";
-    var svg = document.createElementNS(svgNS, "svg");
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute("viewBox", "0 0 " + w + " " + h);
     svg.setAttribute("width", String(w));
     svg.setAttribute("height", String(h));
     svg.classList.add("jds-spark-svg");
-    var polyline = document.createElementNS(svgNS, "polyline");
-    polyline.setAttribute("points", pts.map(function (p) { return p.join(","); }).join(" "));
+    const polyline = document.createElementNS(svgNS, "polyline");
+    polyline.setAttribute("points", pts.map((p) => p.join(",")).join(" "));
     polyline.setAttribute("class", "jds-spark-line");
     svg.appendChild(polyline);
-    var last = pts[pts.length - 1];
-    var dot = document.createElementNS(svgNS, "circle");
+    const last = pts[pts.length - 1];
+    const dot = document.createElementNS(svgNS, "circle");
     dot.setAttribute("cx", String(last[0]));
     dot.setAttribute("cy", String(last[1]));
     dot.setAttribute("r", "2.6");
     dot.setAttribute("class", "jds-spark-dot");
     svg.appendChild(dot);
-    wrap.appendChild(svg);
 
-    var rangeLabel = document.createElement("div");
+    const rangeLabel = document.createElement("div");
     rangeLabel.className = "jds-spark-range";
     rangeLabel.textContent = min === max ? fmtNum(min) + "/mês" : fmtNum(min) + "–" + fmtNum(max) + "/mês";
-    wrap.appendChild(rangeLabel);
 
-    var detail = monthly.map(function (m) { return m.mes + ": " + fmtNum(m.valor); }).join(" · ");
-    attachTooltip(wrap, "Buscas por mês (ago/25–jul/26)", detail);
-    wrap.tabIndex = 0;
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "jds-spark-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.appendChild(svg);
+    toggle.appendChild(rangeLabel);
+    toggle.appendChild(icon("chevron-down", "jds-icon-sm jds-spark-chevron"));
+    wrap.appendChild(toggle);
+
+    const panel = document.createElement("div");
+    panel.className = "jds-spark-panel";
+    panel.hidden = true;
+    const table = document.createElement("table");
+    table.className = "jds-spark-table";
+    monthly.forEach((m) => {
+      const tr = document.createElement("tr");
+      const tdMes = document.createElement("td");
+      tdMes.textContent = m.mes;
+      const tdValor = document.createElement("td");
+      tdValor.className = "jds-cell-num";
+      tdValor.textContent = fmtNum(m.valor);
+      tr.appendChild(tdMes);
+      tr.appendChild(tdValor);
+      table.appendChild(tr);
+    });
+    panel.appendChild(table);
+    wrap.appendChild(panel);
+
+    toggle.addEventListener("click", () => {
+      const willOpen = panel.hidden;
+      panel.hidden = !willOpen;
+      toggle.classList.toggle("is-open", willOpen);
+      toggle.setAttribute("aria-expanded", String(willOpen));
+    });
+
     return wrap;
   }
 
+  // ---------- badge (status: dot + label — nunca cor sozinha) ----------
   function badge(status, label) {
-    var span = document.createElement("span");
+    const span = document.createElement("span");
     span.className = "jds-badge jds-badge-" + status;
-    var dot = document.createElement("span");
+    const dot = document.createElement("span");
     dot.className = "jds-dot";
     span.appendChild(dot);
     span.appendChild(document.createTextNode(label));
     return span;
   }
 
+  // ---------- range chart (faixa min–max, com legenda e tooltip) ----------
+  // items: [{ label, sub, min, max, pending, detail }], opts: { max }
   function renderRangeChart(container, items, opts) {
-    var scaleMax = (opts && opts.max) || Math.max.apply(null, items.map(function (i) { return i.max; })) * 1.05;
+    const scaleMax = (opts && opts.max) || Math.max(...items.map((i) => i.max)) * 1.05;
     container.textContent = "";
-    items.forEach(function (item) {
-      var row = document.createElement("div");
+    items.forEach((item) => {
+      const row = document.createElement("div");
       row.className = "jds-range-row";
 
-      var label = document.createElement("div");
+      const label = document.createElement("div");
       label.className = "jds-range-label";
       label.appendChild(document.createTextNode(item.label));
       if (item.sub) {
-        var small = document.createElement("small");
+        const small = document.createElement("small");
         small.textContent = item.sub;
         label.appendChild(small);
       }
 
-      var track = document.createElement("div");
+      const track = document.createElement("div");
       track.className = "jds-range-track";
-      var fill = document.createElement("div");
+      const fill = document.createElement("div");
       fill.className = "jds-range-fill" + (item.pending ? " is-pending" : "");
-      var leftPct = (item.min / scaleMax) * 100;
-      var widthPct = ((item.max - item.min) / scaleMax) * 100;
+      const leftPct = (item.min / scaleMax) * 100;
+      const widthPct = ((item.max - item.min) / scaleMax) * 100;
       fill.style.left = leftPct + "%";
       fill.style.width = widthPct + "%";
       track.appendChild(fill);
       attachTooltip(fill, item.label, item.detail || "");
       fill.tabIndex = 0;
 
-      var value = document.createElement("div");
+      const value = document.createElement("div");
       value.className = "jds-range-value";
       value.textContent = "$" + item.min.toFixed(2) + "–$" + item.max.toFixed(2);
 
@@ -204,28 +250,30 @@
     });
   }
 
+  // ---------- gráfico de barra fina (valor único, ex.: preço mediano) ----------
+  // items: [{ label, value, detail, pending }], opts: { max, prefix }
   function renderBarChart(container, items, opts) {
-    var prefix = (opts && opts.prefix) || "";
-    var scaleMax = (opts && opts.max) || Math.max.apply(null, items.map(function (i) { return i.value; })) * 1.15;
+    const prefix = (opts && opts.prefix) || "";
+    const scaleMax = (opts && opts.max) || Math.max(...items.map((i) => i.value)) * 1.15;
     container.textContent = "";
-    items.forEach(function (item) {
-      var row = document.createElement("div");
+    items.forEach((item) => {
+      const row = document.createElement("div");
       row.className = "jds-bar-row";
 
-      var label = document.createElement("div");
+      const label = document.createElement("div");
       label.className = "jds-bar-label";
       label.textContent = item.label;
 
-      var trackBg = document.createElement("div");
+      const trackBg = document.createElement("div");
       trackBg.className = "jds-bar-track-bg";
-      var fill = document.createElement("div");
+      const fill = document.createElement("div");
       fill.className = "jds-bar-fill" + (item.pending ? " is-pending" : "");
       fill.style.width = (item.value / scaleMax) * 100 + "%";
       trackBg.appendChild(fill);
       attachTooltip(fill, item.label, item.detail || "");
       fill.tabIndex = 0;
 
-      var value = document.createElement("div");
+      const value = document.createElement("div");
       value.className = "jds-bar-value";
       value.textContent = prefix + item.value.toFixed(2);
 
@@ -236,26 +284,30 @@
     });
   }
 
+  // ---------- tabela genérica a partir de linhas + definição de colunas ----------
+  // columns: [{ key, header, type: 'text'|'name'|'num'|'badge' }]
+  // opts.statusAttr: nome do campo da linha usado como data-status no <tr>
+  // (liga a faixa colorida lateral em .jds-table e serve de gancho pro filtro)
   function renderTable(tbody, rows, columns, opts) {
     opts = opts || {};
     tbody.textContent = "";
-    rows.forEach(function (row) {
-      var tr = document.createElement("tr");
+    rows.forEach((row) => {
+      const tr = document.createElement("tr");
       if (opts.statusAttr && row[opts.statusAttr]) tr.dataset.status = row[opts.statusAttr];
-      columns.forEach(function (col) {
-        var td = document.createElement("td");
+      columns.forEach((col) => {
+        const td = document.createElement("td");
         if (col.type === "name") td.className = "jds-cell-name";
         if (col.type === "num") td.className = "jds-cell-num";
         if (col.type === "badge") {
           td.appendChild(badge(row[col.key + "Status"], row[col.key]));
         } else if (col.type === "copy") {
           if (row[col.key]) {
-            var btn = document.createElement("button");
+            const btn = document.createElement("button");
             btn.type = "button";
             btn.className = "jds-copy-btn";
             btn.appendChild(icon("copy", "jds-icon-sm"));
             btn.appendChild(document.createTextNode(" Copiar título"));
-            (function (text, b) { b.addEventListener("click", function () { copyText(text, b); }); })(row[col.key], btn);
+            btn.addEventListener("click", () => copyText(row[col.key], btn));
             td.appendChild(btn);
           } else {
             td.textContent = "—";
@@ -271,31 +323,50 @@
     });
   }
 
+  // liga chips de filtro (.jds-filter-pill[data-filter]) a um <tbody> já
+  // renderizado por renderTable com opts.statusAttr — filtra por tr[data-status]
   function wireStatusFilter(filterRow, tbody) {
-    var pills = filterRow.querySelectorAll(".jds-filter-pill");
-    pills.forEach(function (pill) {
-      pill.addEventListener("click", function () {
-        pills.forEach(function (p) { p.classList.remove("is-active"); });
+    const pills = filterRow.querySelectorAll(".jds-filter-pill");
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        pills.forEach((p) => p.classList.remove("is-active"));
         pill.classList.add("is-active");
-        var filter = pill.dataset.filter;
-        tbody.querySelectorAll("tr").forEach(function (tr) {
+        const filter = pill.dataset.filter;
+        tbody.querySelectorAll("tr").forEach((tr) => {
           tr.style.display = filter === "all" || tr.dataset.status === filter ? "" : "none";
         });
       });
     });
   }
 
+  // abas de painel gerenciador — só uma seção visível por vez (mobile e
+  // desktop), em vez de rolar por tudo. tabsEl tem os .jds-tab-btn[data-tab],
+  // os painéis em qualquer lugar do documento têm [data-tab-panel]
   function wireTabs(tabsEl) {
-    var buttons = tabsEl.querySelectorAll(".jds-tab-btn");
-    var panels = document.querySelectorAll("[data-tab-panel]");
+    const buttons = tabsEl.querySelectorAll(".jds-tab-btn");
+    const panels = document.querySelectorAll("[data-tab-panel]");
     function activate(tab) {
-      buttons.forEach(function (b) { b.classList.toggle("is-active", b.dataset.tab === tab); });
-      panels.forEach(function (p) { p.hidden = p.dataset.tabPanel !== tab; });
+      buttons.forEach((b) => b.classList.toggle("is-active", b.dataset.tab === tab));
+      panels.forEach((p) => { p.hidden = p.dataset.tabPanel !== tab; });
     }
-    buttons.forEach(function (btn) {
-      btn.addEventListener("click", function () { activate(btn.dataset.tab); });
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => activate(btn.dataset.tab));
     });
   }
 
-  global.jds = { initThemeToggle: initThemeToggle, showTooltip: showTooltip, moveTooltip: moveTooltip, hideTooltip: hideTooltip, attachTooltip: attachTooltip, badge: badge, icon: icon, copyText: copyText, renderRangeChart: renderRangeChart, renderBarChart: renderBarChart, renderTable: renderTable, wireStatusFilter: wireStatusFilter, wireTabs: wireTabs };
+  global.jds = {
+    initThemeToggle,
+    showTooltip,
+    moveTooltip,
+    hideTooltip,
+    attachTooltip,
+    badge,
+    icon,
+    copyText,
+    renderRangeChart,
+    renderBarChart,
+    renderTable,
+    wireStatusFilter,
+    wireTabs,
+  };
 })(window);

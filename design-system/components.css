@@ -5,7 +5,11 @@
   Layout escrito MOBILE-FIRST (regra #64 do catálogo ui-ux-pro-max e consenso
   de fóruns/Smashing Magazine, 19/09/2026): o estado-base de toda regra de
   layout é o celular; @media (min-width: ...) ACRESCENTA colunas/espaço pra
-  telas maiores — nunca o contrário.
+  telas maiores — nunca o contrário. Densidade de desktop segue o estilo
+  "Data-Dense Dashboard" (BI/Analytics) do catálogo: grid eficiente, padding
+  mínimo, cards compactos, máxima densidade de informação sem virar bagunça —
+  esse estilo é explicitamente "mobile-friendly: condicional", por isso o
+  celular tem seu próprio conjunto de regras, não é o desktop encolhido.
 */
 
 .jds-root, .jds-root * { box-sizing: border-box; }
@@ -15,35 +19,53 @@
   background: var(--page-plane);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: hidden; /* rede de segurança — nada deve forçar scroll horizontal da página */
 }
 .jds-root h1, .jds-root h2, .jds-root h3 { font-family: var(--font-sans); margin: 0; }
 .jds-root p { margin: 0; }
 .jds-root a { color: var(--text-secondary); }
-.jds-root code { font-family: ui-monospace, "SF Mono", Consolas, monospace; background: var(--gridline); border-radius: 4px; padding: 1px 5px; font-size: 0.9em; }
+.jds-root code {
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  background: var(--gridline); border-radius: 4px; padding: 1px 5px; font-size: 0.9em;
+}
 
-.jds-icon { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+/* ---------- ícone (SVG inline, stroke-based — Lucide) ---------- */
+.jds-icon {
+  width: 16px; height: 16px; flex: none;
+  stroke: currentColor; fill: none; stroke-width: 2.1;
+  stroke-linecap: round; stroke-linejoin: round;
+}
 .jds-icon-sm { width: 13px; height: 13px; }
 .jds-icon-lg { width: 20px; height: 20px; }
 
+/* ---------- marca ---------- */
 .jds-brand { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: var(--radius-md); background: linear-gradient(155deg, var(--series-1), var(--seq-600)); flex: none; }
 .jds-brand .jds-icon { width: 18px; height: 18px; stroke: #fff; }
 .jds-brand-row { display: flex; align-items: flex-start; gap: var(--space-3); min-width: 0; }
-.jds-brand-row > div { min-width: 0; }
+.jds-brand-row > div { min-width: 0; } /* deixa o texto quebrar linha em vez de espremer/estourar */
 
+/* ---------- layout (base = celular) ---------- */
 .jds-shell { max-width: 980px; margin: 0 auto; padding: var(--space-6) var(--shell-pad-x) var(--space-10); }
 .jds-stack { display: flex; flex-direction: column; gap: var(--space-4); }
 .jds-row { display: flex; align-items: center; gap: var(--space-3); }
 .jds-row-between { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
 
-.jds-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-4); margin-top: var(--space-4); }
-.jds-grid-2 > .jds-card + .jds-card { margin-top: 0; }
+/* duas peças de conteúdo paralelo (ex.: cards de referência) lado a lado
+   quando cabe — grid eficiente, filosofia "Data-Dense Dashboard" */
+.jds-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-4); margin-top: var(--space-4); } /* .jds-card + .jds-card não pega aqui pq o irmão anterior é .jds-card, não .jds-grid-2 — sem isso os cards ficavam grudados */
+.jds-grid-2 > .jds-card + .jds-card { margin-top: 0; } /* o gap do grid já espaça — evita dobrar (mobile) ou desalinhar (lado a lado); seletor mais específico em vez de !important (regra #10 do catálogo ui-ux-pro-max) */
 
+/* ---------- dashboard real: coluna principal + barra lateral, não tudo
+   empilhado em coluna única. Base celular = empilhado (main antes de side);
+   a partir de 900px vira duas colunas lado a lado de verdade. */
 .jds-dashboard { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-4); }
 .jds-dashboard-main, .jds-dashboard-side { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
 .jds-dashboard-main > .jds-card + .jds-card,
-.jds-dashboard-side > .jds-card + .jds-card { margin-top: 0; }
+.jds-dashboard-side > .jds-card + .jds-card { margin-top: 0; } /* o gap do flex já espaça cada coluna */
 
+/* ---------- abas de painel gerenciador — só UMA seção visível por vez,
+   em qualquer tamanho de tela. Isso é o que faz parecer painel de admin em
+   vez de artigo rolável — funciona igual no celular e no desktop. ---------- */
 .jds-tabs { display: flex; gap: var(--space-2); overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--space-4) 0; padding-bottom: 2px; }
 .jds-tab-btn {
   flex: none; display: inline-flex; align-items: center; gap: 6px;
@@ -57,6 +79,7 @@
 .jds-tab-btn.is-active .jds-icon { stroke: #fff; }
 [data-tab-panel][hidden] { display: none; }
 
+/* ---------- topo: empilhado no celular, uma linha a partir de 761px ---------- */
 .jds-topbar { margin-bottom: var(--space-6); }
 .jds-topbar.jds-row-between { flex-direction: column; align-items: stretch; gap: var(--space-3); }
 .jds-topbar.jds-row-between > button { align-self: flex-start; }
@@ -64,6 +87,7 @@
 .jds-subtitle { color: var(--text-secondary); font-size: var(--text-sm); }
 .jds-meta { color: var(--text-muted); font-size: var(--text-xs); margin-top: var(--space-2); }
 
+/* ---------- botão ---------- */
 .jds-btn {
   font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 600;
   border-radius: var(--radius-md); padding: 7px 13px; cursor: pointer;
@@ -76,6 +100,7 @@
 .jds-btn-primary { background: var(--series-1); border-color: var(--series-1); color: #fff; }
 .jds-btn-primary:hover { background: var(--seq-500); border-color: var(--seq-500); color: #fff; }
 
+/* ---------- cartão (padding compacto no celular, respira mais em desktop) ---------- */
 .jds-card {
   background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
   padding: var(--space-4); box-shadow: var(--shadow-1);
@@ -87,21 +112,30 @@
 .jds-card-head { display: flex; align-items: center; gap: var(--space-2); margin-bottom: 2px; }
 .jds-card-head .jds-icon { color: var(--text-muted); }
 
+/* cartão secundário — mesma hierarquia do Carbon/Material: conteúdo de
+   referência (não a história principal da página) fica visualmente mais
+   quieto, pra não competir peso com o que importa de verdade */
 .jds-card-secondary {
   background: transparent; border: 1px dashed var(--border); box-shadow: none;
 }
 .jds-card-secondary h2 { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 650; }
 .jds-card-secondary .jds-card-head .jds-icon { width: 15px; height: 15px; }
 
+/* cartão de oportunidade — faixa colorida no topo pra separar visualmente de
+   "validação" (sem virar cor de série de gráfico: é identidade de seção, não dado) */
 .jds-card-opportunity { border-top: 3px solid var(--series-3); }
 .jds-card-opportunity .jds-card-head .jds-icon { color: var(--series-3); }
 
+/* ---------- alerta (status + ícone + texto, nunca só cor) ---------- */
 .jds-alert {
   display: flex; gap: var(--space-3); align-items: flex-start;
   border-radius: var(--radius-lg); padding: var(--space-4);
   border: 1px solid var(--border); background: var(--surface-1);
 }
-.jds-alert-icon { flex: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.jds-alert-icon {
+  flex: none; width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
 .jds-alert-title { font-size: var(--text-sm); font-weight: 650; margin-bottom: 3px; }
 .jds-alert-body { font-size: 1rem; color: var(--text-secondary); line-height: 1.55; max-width: 68ch; }
 .jds-alert-good .jds-alert-icon { background: color-mix(in srgb, var(--status-good) 15%, var(--surface-1)); color: var(--status-good-text); }
@@ -109,46 +143,66 @@
 .jds-alert-serious .jds-alert-icon { background: color-mix(in srgb, var(--status-serious) 18%, var(--surface-1)); color: var(--status-serious-text); }
 .jds-alert-critical .jds-alert-icon { background: color-mix(in srgb, var(--status-critical) 15%, var(--surface-1)); color: var(--status-critical-text); }
 
+/* ---------- badge (status: ícone/glifo + label, nunca cor sozinha) ---------- */
 .jds-badge {
   display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 8px;
   border-radius: var(--radius-pill); font-size: var(--text-2xs); font-weight: 650;
   white-space: nowrap; border: 1px solid transparent;
 }
 .jds-badge .jds-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
-.jds-badge-good { color: var(--status-good-text); }
-.jds-badge-warning { color: var(--status-warning-text); }
-.jds-badge-serious { color: var(--status-serious-text); }
+.jds-badge-good     { color: var(--status-good-text); }
+.jds-badge-warning  { color: var(--status-warning-text); }
+.jds-badge-serious  { color: var(--status-serious-text); }
 .jds-badge-critical { color: var(--status-critical-text); }
-.jds-badge-good .jds-dot { background: var(--status-good); }
-.jds-badge-warning .jds-dot { background: var(--status-warning); }
-.jds-badge-serious .jds-dot { background: var(--status-serious); }
+.jds-badge-good .jds-dot     { background: var(--status-good); }
+.jds-badge-warning .jds-dot  { background: var(--status-warning); }
+.jds-badge-serious .jds-dot  { background: var(--status-serious); }
 .jds-badge-critical .jds-dot { background: var(--status-critical); }
 
+/* ---------- stat tile: 1 coluna no celular → 2 (481px) → 4 (761px) ---------- */
 .jds-stat-row { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
-.jds-stat-tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4); }
-.jds-stat-label { font-size: var(--text-2xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: var(--space-2); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.jds-stat-tile {
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.jds-stat-label {
+  font-size: var(--text-2xs); color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.04em; margin-bottom: var(--space-2); font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
 .jds-stat-label .jds-icon { color: var(--text-muted); width: 13px; height: 13px; }
-.jds-stat-value { font-size: var(--text-lg); font-weight: 650; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; font-variant-numeric: proportional-nums; }
+.jds-stat-value {
+  font-size: var(--text-lg); font-weight: 650; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 7px; font-variant-numeric: proportional-nums;
+}
 .jds-stat-delta { font-size: var(--text-xs); font-weight: 650; }
 .jds-stat-delta-good { color: var(--success-text); }
 .jds-stat-delta-bad { color: var(--status-critical-text); }
 .jds-stat-sub { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.5; }
 
+/* ---------- tabela ---------- */
+/* wrapper obrigatório em volta de toda <table> — sem isso, tabela larga
+   estoura a tela no celular e força zoom/scroll horizontal da página inteira */
 .jds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(var(--space-4) * -1); padding: 0 var(--space-4); }
 .jds-table-wrap .jds-table { min-width: 560px; }
 .jds-table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
 .jds-table th, .jds-table td { text-align: left; padding: 10px 11px; border-bottom: 1px solid var(--gridline); vertical-align: top; }
-.jds-table th { color: var(--text-muted); font-weight: 650; font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.03em; }
+.jds-table th {
+  color: var(--text-muted); font-weight: 650; font-size: var(--text-2xs);
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
 .jds-table td { color: var(--text-secondary); }
 .jds-table td.jds-cell-name { color: var(--text-primary); font-weight: 600; }
 .jds-table td.jds-cell-num { font-variant-numeric: tabular-nums; text-align: right; }
 .jds-table tbody tr:hover td { background: color-mix(in srgb, var(--series-1) 5%, transparent); }
+/* faixa lateral de status por linha — leitura rápida sem precisar ler o badge inteiro */
 .jds-table tbody tr[data-status] td:first-child { border-left: 3px solid transparent; padding-left: 9px; }
 .jds-table tbody tr[data-status="good"] td:first-child { border-left-color: var(--status-good); }
 .jds-table tbody tr[data-status="warning"] td:first-child { border-left-color: var(--status-warning); }
 .jds-table tbody tr[data-status="serious"] td:first-child { border-left-color: var(--status-serious); }
 .jds-table tbody tr[data-status="critical"] td:first-child { border-left-color: var(--status-critical); }
 
+/* botão de copiar (ação real, não decorativo) */
 .jds-copy-btn {
   display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-sans);
   font-size: var(--text-2xs); font-weight: 600; padding: 5px 10px; border-radius: var(--radius-md);
@@ -158,27 +212,53 @@
 .jds-copy-btn:hover { color: var(--text-primary); border-color: var(--series-1); }
 .jds-copy-btn.is-copied { color: var(--status-good-text); border-color: var(--status-good); }
 
-.jds-spark-wrap { display: flex; flex-direction: column; gap: 3px; cursor: default; }
-.jds-spark-svg { display: block; }
+/* sparkline mês a mês — faixa min–max sempre em texto (não só no hover);
+   clique/toque abre um dropdown com a tabela mês a mês (hover sozinho não
+   existe em touch, então não pode ser o único jeito de ver o detalhe) */
+.jds-spark-wrap { display: flex; flex-direction: column; gap: 4px; }
+.jds-spark-toggle {
+  display: flex; align-items: center; gap: 6px; background: none; border: none;
+  padding: 2px 0; margin: 0; cursor: pointer; font-family: inherit; text-align: left;
+}
+.jds-spark-svg { display: block; flex: none; }
 .jds-spark-line { fill: none; stroke: var(--text-muted); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .jds-spark-dot { fill: var(--series-1); }
 .jds-spark-range { font-size: var(--text-2xs); color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.jds-spark-chevron { color: var(--text-muted); transition: transform var(--duration-fast) var(--ease-standard); }
+.jds-spark-toggle:hover .jds-spark-chevron { color: var(--text-primary); }
+.jds-spark-toggle.is-open .jds-spark-chevron { transform: rotate(180deg); }
 .jds-spark-empty { font-size: var(--text-2xs); color: var(--text-muted); font-style: italic; white-space: nowrap; }
 
+.jds-spark-panel { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; max-width: 160px; }
+.jds-spark-panel[hidden] { display: none; }
+.jds-spark-table { width: 100%; border-collapse: collapse; font-size: var(--text-2xs); }
+.jds-spark-table td { padding: 4px 8px; border-bottom: 1px solid var(--gridline); color: var(--text-secondary); white-space: nowrap; }
+.jds-spark-table tr:last-child td { border-bottom: none; }
+.jds-spark-table td.jds-cell-num { text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); font-weight: 600; }
+
+/* ---------- legenda ---------- */
 .jds-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); font-size: var(--text-xs); color: var(--text-secondary); }
 .jds-legend-item { display: inline-flex; align-items: center; gap: 6px; }
 .jds-legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
-.jds-legend-swatch.is-pending { background-image: repeating-linear-gradient(135deg, currentColor 0 3px, transparent 3px 6px); opacity: 0.6; }
+.jds-legend-swatch.is-pending {
+  background-image: repeating-linear-gradient(135deg, currentColor 0 3px, transparent 3px 6px);
+  opacity: 0.6;
+}
 
+/* ---------- barra de faixa (min–max / dumbbell) — empilhada no celular ---------- */
 .jds-range-row { display: grid; grid-template-columns: 1fr; gap: 4px; }
 .jds-range-label { font-size: var(--text-xs); color: var(--text-secondary); }
 .jds-range-label small { display: block; color: var(--text-muted); font-size: var(--text-2xs); margin-top: 2px; }
 .jds-range-track { position: relative; height: 10px; background: var(--gridline); border-radius: 5px; }
 .jds-range-fill { position: absolute; top: 0; height: 10px; border-radius: 5px; background: var(--series-1); cursor: default; transition: filter var(--duration-fast) var(--ease-standard); }
 .jds-range-fill:hover, .jds-range-fill:focus-visible { filter: brightness(1.12); }
-.jds-range-fill.is-pending { background: repeating-linear-gradient(135deg, var(--series-1) 0 4px, transparent 4px 8px); opacity: 0.55; }
+.jds-range-fill.is-pending {
+  background: repeating-linear-gradient(135deg, var(--series-1) 0 4px, transparent 4px 8px);
+  opacity: 0.55;
+}
 .jds-range-value { font-size: var(--text-xs); text-align: left; font-variant-numeric: tabular-nums; color: var(--text-primary); }
 
+/* ---------- barra fina (marca de gráfico) — empilhada no celular ---------- */
 .jds-bar-track { display: flex; flex-direction: column; gap: var(--space-3); }
 .jds-bar-row { display: grid; grid-template-columns: 1fr; gap: 4px; }
 .jds-bar-label { font-size: var(--text-xs); color: var(--text-secondary); }
@@ -188,6 +268,7 @@
 .jds-bar-fill.is-pending { background: repeating-linear-gradient(135deg, var(--series-1) 0 4px, transparent 4px 8px); opacity: 0.55; }
 .jds-bar-value { font-size: var(--text-xs); text-align: left; font-variant-numeric: tabular-nums; color: var(--text-primary); }
 
+/* ---------- filtros (linha única, acima do conteúdo) ---------- */
 .jds-filter-row { display: flex; gap: var(--space-2); margin-bottom: var(--space-5); flex-wrap: wrap; }
 .jds-filter-pill {
   font-size: var(--text-2xs); font-weight: 600; padding: 6px 12px; border-radius: var(--radius-pill);
@@ -195,12 +276,15 @@
 }
 .jds-filter-pill.is-active { background: var(--series-1); border-color: var(--series-1); color: #fff; }
 
+/* ---------- passos / lista ordenada ---------- */
 .jds-steps { margin: 0; padding-left: 20px; font-size: 1rem; color: var(--text-secondary); line-height: 1.75; max-width: 68ch; }
 .jds-steps li + li { margin-top: 8px; }
 .jds-steps b { color: var(--text-primary); }
 
+/* ---------- fontes / rodapé ---------- */
 .jds-sources { font-size: var(--text-2xs); color: var(--text-muted); line-height: 1.9; }
 
+/* ---------- tooltip flutuante ---------- */
 .jds-tooltip {
   position: fixed; pointer-events: none; background: var(--text-primary); color: var(--surface-1);
   font-size: var(--text-2xs); padding: 6px 10px; border-radius: var(--radius-sm); opacity: 0;
@@ -210,7 +294,11 @@
 .jds-tooltip.is-visible { opacity: 1; }
 .jds-tooltip b { color: #fff; }
 
+/* ---------- estado vazio ---------- */
 .jds-empty { text-align: center; padding: var(--space-10) var(--space-5); color: var(--text-muted); font-size: var(--text-sm); }
+
+/* ================= a partir daqui, telas maiores GANHAM estrutura extra —
+   nunca o contrário (mobile-first, guideline #64 do catálogo ui-ux-pro-max) ================= */
 
 @media (min-width: 481px) {
   .jds-stat-row { grid-template-columns: repeat(2, 1fr); }
@@ -230,11 +318,18 @@
   .jds-range-value, .jds-bar-value { text-align: right; }
   .jds-table { font-size: var(--text-sm); }
   .jds-table-wrap { margin: 0 calc(var(--space-6) * -1); padding: 0 var(--space-6); }
+  /* .jds-card-secondary usa padding horizontal menor (--space-5) em desktop —
+     sem este ajuste a tabela vazava 4px pra fora da borda tracejada do card */
   .jds-card-secondary .jds-table-wrap { margin: 0 calc(var(--space-5) * -1); padding: 0 var(--space-5); }
+  /* desktop tem espaço de sobra pra ler texto mais denso — volta ao tamanho
+     compacto (filosofia "Data-Dense Dashboard"); no celular fica 1rem
+     (16px) pela diretriz #67 de acessibilidade */
   .jds-card-note, .jds-alert-body, .jds-steps { font-size: var(--text-sm); }
 }
 
 @media (min-width: 900px) {
+  /* tela larga o bastante pra duas colunas de verdade — shell ganha mais
+     espaço, senão a coluna principal fica espremida junto com a lateral */
   .jds-shell { max-width: 1180px; }
   .jds-dashboard { flex-direction: row; align-items: flex-start; }
   .jds-dashboard-main { flex: 2; }

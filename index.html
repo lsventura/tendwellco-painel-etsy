@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Etsy Nicho Tracker — TendWellCo</title>
-<link rel="stylesheet" href="design-system/tokens.css?v=5">
-<link rel="stylesheet" href="design-system/components.css?v=5">
+<link rel="stylesheet" href="design-system/tokens.css?v=6">
+<link rel="stylesheet" href="design-system/components.css?v=6">
 <style>
   .price-chart { display: flex; flex-direction: column; gap: var(--space-4); }
 </style>
 </head>
 <body class="jds-root">
-<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v5 — 19/09/2026 — volume de busca mês a mês por oportunidade</div>
+<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v6 — 19/09/2026 — dropdown de volume mês a mês (clique/toque)</div>
 <div class="jds-shell">
 
   <div class="jds-row-between jds-topbar">
@@ -102,7 +102,7 @@
   <div data-tab-panel="oportunidades" hidden>
   <div class="jds-card jds-card-opportunity">
     <div class="jds-card-head"><span id="head-icon-opportunity"></span><h2>Mais oportunidades — nichos novos pesquisados agora</h2></div>
-    <p class="jds-card-note">Candidatos a nova listagem usando o mesmo motor (<code>gerador.mjs</code>) — dado real extraído em 19/09/2026, mesma fonte da tabela acima. "Blood pressure log" foi o melhor sinal de volume de toda a pesquisa até agora. Passa o mouse (ou toca) no gráfico pra ver o número de cada mês.</p>
+    <p class="jds-card-note">Candidatos a nova listagem usando o mesmo motor (<code>gerador.mjs</code>) — dado real extraído em 19/09/2026, mesma fonte da tabela acima. "Blood pressure log" foi o melhor sinal de volume de toda a pesquisa até agora. Clica (ou toca) no gráfico pra abrir o detalhe mês a mês.</p>
     <div class="jds-table-wrap">
     <table class="jds-table">
       <thead>
@@ -182,7 +182,7 @@
 
 </div>
 
-<script src="design-system/jds.js?v=5"></script>
+<script src="design-system/jds.js?v=6"></script>
 <script>
   jds.initThemeToggle(document.getElementById('theme-toggle'));
   document.getElementById('brand-icon').appendChild(jds.icon('package'));
