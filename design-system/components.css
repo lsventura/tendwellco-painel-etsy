@@ -10,6 +10,7 @@
   background: var(--page-plane);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 .jds-root h1, .jds-root h2, .jds-root h3 { font-family: var(--font-sans); margin: 0; }
 .jds-root p { margin: 0; }
@@ -22,7 +23,8 @@
 
 .jds-brand { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: var(--radius-md); background: linear-gradient(155deg, var(--series-1), var(--seq-600)); flex: none; }
 .jds-brand .jds-icon { width: 18px; height: 18px; stroke: #fff; }
-.jds-brand-row { display: flex; align-items: center; gap: var(--space-3); }
+.jds-brand-row { display: flex; align-items: flex-start; gap: var(--space-3); min-width: 0; }
+.jds-brand-row > div { min-width: 0; }
 
 .jds-shell { max-width: 980px; margin: 0 auto; padding: var(--space-8) var(--space-5) var(--space-12); }
 .jds-stack { display: flex; flex-direction: column; gap: var(--space-4); }
@@ -94,6 +96,8 @@
 .jds-stat-delta-bad { color: var(--status-critical-text); }
 .jds-stat-sub { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.5; }
 
+.jds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(var(--space-6) * -1); padding: 0 var(--space-6); }
+.jds-table-wrap .jds-table { min-width: 560px; }
 .jds-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
 .jds-table th, .jds-table td { text-align: left; padding: 10px 11px; border-bottom: 1px solid var(--gridline); vertical-align: top; }
 .jds-table th { color: var(--text-muted); font-weight: 650; font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.03em; }
@@ -144,8 +148,18 @@
 .jds-empty { text-align: center; padding: var(--space-10) var(--space-5); color: var(--text-muted); font-size: var(--text-sm); }
 
 @media (max-width: 760px) {
+  .jds-shell { padding: var(--space-6) var(--space-4) var(--space-10); }
+  .jds-row-between.jds-topbar { flex-direction: column; align-items: stretch; gap: var(--space-3); }
+  .jds-row-between.jds-topbar > button { align-self: flex-start; }
   .jds-stat-row { grid-template-columns: repeat(2, 1fr); }
+  .jds-card { padding: var(--space-4); }
   .jds-range-row, .jds-bar-row { grid-template-columns: 1fr; gap: 4px; }
   .jds-range-value, .jds-bar-value { text-align: left; }
   .jds-table { font-size: var(--text-xs); }
+  .jds-table-wrap { margin: 0 calc(var(--space-4) * -1); padding: 0 var(--space-4); }
+}
+
+@media (max-width: 480px) {
+  .jds-stat-row { grid-template-columns: 1fr; }
+  .jds-title { font-size: var(--text-lg); }
 }
