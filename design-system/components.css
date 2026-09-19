@@ -58,6 +58,13 @@
 .jds-card-head { display: flex; align-items: center; gap: var(--space-2); margin-bottom: 2px; }
 .jds-card-head .jds-icon { color: var(--text-muted); }
 
+.jds-card-secondary {
+  background: transparent; border: 1px dashed var(--border); box-shadow: none;
+  padding: var(--space-4) var(--space-5);
+}
+.jds-card-secondary h2 { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 650; }
+.jds-card-secondary .jds-card-head .jds-icon { width: 15px; height: 15px; }
+
 .jds-alert {
   display: flex; gap: var(--space-4); align-items: flex-start;
   border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);

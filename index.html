@@ -57,18 +57,14 @@
   </div>
 
   <div class="jds-card">
-    <div class="jds-card-head"><span id="head-icon-price"></span><h2>Preço mediano real por termo de busca</h2></div>
-    <p class="jds-card-note">Dado extraído direto de ferramenta de keyword research do Etsy (rankhero, mesma fonte que o eRank) em 19/09/2026 — não é estimativa de artigo genérico. A barra do nosso kit é <b>sugestão corrigida</b> (tracejada): ainda não publicada, porque a loja está pausada.</p>
+    <div class="jds-card-head"><span id="head-icon-price"></span><h2>Validação de demanda real — preço e palavra-chave</h2></div>
+    <p class="jds-card-note">Dado extraído direto de ferramenta de keyword research do Etsy (rankhero, mesma fonte que o eRank) em 19/09/2026 — não é estimativa de artigo genérico.</p>
     <div class="price-chart" id="price-chart"></div>
     <div class="jds-legend" style="margin-top:var(--space-4)">
       <span class="jds-legend-item"><span class="jds-legend-swatch" style="background:var(--series-1)"></span>Mediano real observado</span>
       <span class="jds-legend-item"><span class="jds-legend-swatch is-pending" style="color:var(--series-1)"></span>Nosso kit (sugestão, ainda não listado)</span>
     </div>
-  </div>
-
-  <div class="jds-card">
-    <div class="jds-card-head"><span id="head-icon-keyword"></span><h2>Palavra-chave dentro do nosso nicho (dado real)</h2></div>
-    <p class="jds-card-note">Todas essas variações vendem basicamente pra o mesmo comprador — a diferença é só o quanto de concorrência cada título carrega. Fonte: rankhero.com/keywords/&lt;termo&gt;, extraído 19/09/2026.</p>
+    <p class="jds-card-note" style="margin-top:var(--space-5)">Todas as variações abaixo vendem pra o mesmo comprador — a diferença é só quanta concorrência cada título carrega.</p>
     <div class="jds-table-wrap">
     <table class="jds-table">
       <thead>
@@ -81,26 +77,6 @@
         </tr>
       </thead>
       <tbody id="keyword-table-body"></tbody>
-    </table>
-    </div>
-  </div>
-
-  <div class="jds-card">
-    <div class="jds-card-head"><span id="head-icon-niche"></span><h2>Comparação de nichos mais amplos</h2></div>
-    <p class="jds-card-note">Pra decidir onde <b>não</b> vale a pena expandir agora — cruzando demanda geral do Etsy com o que nosso motor (<code>gerador.mjs</code> + <code>montar-pdf.mjs</code>) já sabe produzir.</p>
-    <div class="jds-table-wrap">
-    <table class="jds-table">
-      <thead>
-        <tr>
-          <th>Nicho</th>
-          <th>Sinal de demanda</th>
-          <th>Preço observado</th>
-          <th>Competição</th>
-          <th>Já produzimos?</th>
-          <th>Veredito</th>
-        </tr>
-      </thead>
-      <tbody id="niche-table-body"></tbody>
     </table>
     </div>
   </div>
@@ -119,8 +95,28 @@
     </ol>
   </div>
 
-  <div class="jds-card">
-    <div class="jds-card-head"><span id="head-icon-update"></span><h2>Como manter esse painel atualizado</h2></div>
+  <div class="jds-card jds-card-secondary">
+    <div class="jds-card-head"><span id="head-icon-niche"></span><h2>Referência: nichos mais amplos fora do nosso foco</h2></div>
+    <p class="jds-card-note">Pra decidir onde <b>não</b> vale a pena expandir agora — cruzando demanda geral do Etsy com o que nosso motor (<code>gerador.mjs</code> + <code>montar-pdf.mjs</code>) já sabe produzir.</p>
+    <div class="jds-table-wrap">
+    <table class="jds-table">
+      <thead>
+        <tr>
+          <th>Nicho</th>
+          <th>Sinal de demanda</th>
+          <th>Preço observado</th>
+          <th>Competição</th>
+          <th>Já produzimos?</th>
+          <th>Veredito</th>
+        </tr>
+      </thead>
+      <tbody id="niche-table-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="jds-card jds-card-secondary">
+    <div class="jds-card-head"><span id="head-icon-update"></span><h2>Referência: como manter esse painel atualizado</h2></div>
     <p class="jds-card-note">
       Não existe API pública de "mais vendidos" do Etsy — a Etsy Open API v3 não expõe contagem de vendas por concorrente, e o app já cadastrado (chave em <code>etsy/.env</code>) nunca completou o fluxo OAuth (sem token salvo em <code>etsy/.oauth_state.json</code>), então hoje não dá pra puxar nem os dados da nossa própria loja automaticamente.
       Os números de busca/concorrência acima vieram de ferramentas de keyword research (rankhero, mesma família de dado do eRank) — essas eu consigo repetir por pesquisa quando pedir, a cada 4-6 semanas ou antes de lançar uma listagem nova.
@@ -144,7 +140,6 @@
   document.getElementById('brand-icon').appendChild(jds.icon('package'));
   document.getElementById('alert-icon').appendChild(jds.icon('clock'));
   document.getElementById('head-icon-price').appendChild(jds.icon('tag', 'jds-icon-lg'));
-  document.getElementById('head-icon-keyword').appendChild(jds.icon('search', 'jds-icon-lg'));
   document.getElementById('head-icon-niche').appendChild(jds.icon('package', 'jds-icon-lg'));
   document.getElementById('head-icon-steps').appendChild(jds.icon('check', 'jds-icon-lg'));
   document.getElementById('head-icon-update').appendChild(jds.icon('info', 'jds-icon-lg'));
