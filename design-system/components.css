@@ -1,6 +1,15 @@
 /*
   Jarvis Design System — componentes
   Consome as variáveis de tokens.css. Requer a classe .jds-root no elemento raiz.
+
+  Layout escrito MOBILE-FIRST (regra #64 do catálogo ui-ux-pro-max e consenso
+  de fóruns/Smashing Magazine, 19/09/2026): o estado-base de toda regra de
+  layout é o celular; @media (min-width: ...) ACRESCENTA colunas/espaço pra
+  telas maiores — nunca o contrário. Densidade de desktop segue o estilo
+  "Data-Dense Dashboard" (BI/Analytics) do catálogo: grid eficiente, padding
+  mínimo, cards compactos, máxima densidade de informação sem virar bagunça —
+  esse estilo é explicitamente "mobile-friendly: condicional", por isso o
+  celular tem seu próprio conjunto de regras, não é o desktop encolhido.
 */
 
 .jds-root, .jds-root * { box-sizing: border-box; }
@@ -26,12 +35,17 @@
 .jds-brand-row { display: flex; align-items: flex-start; gap: var(--space-3); min-width: 0; }
 .jds-brand-row > div { min-width: 0; }
 
-.jds-shell { max-width: 980px; margin: 0 auto; padding: var(--space-8) var(--shell-pad-x) var(--space-12); }
+.jds-shell { max-width: 980px; margin: 0 auto; padding: var(--space-6) var(--shell-pad-x) var(--space-10); }
 .jds-stack { display: flex; flex-direction: column; gap: var(--space-4); }
 .jds-row { display: flex; align-items: center; gap: var(--space-3); }
 .jds-row-between { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
 
+.jds-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+.jds-grid-2 > .jds-card + .jds-card { margin-top: 0; }
+
 .jds-topbar { margin-bottom: var(--space-6); }
+.jds-topbar.jds-row-between { flex-direction: column; align-items: stretch; gap: var(--space-3); }
+.jds-topbar.jds-row-between > button { align-self: flex-start; }
 .jds-title { font-size: var(--text-xl); font-weight: 650; letter-spacing: -0.01em; margin-bottom: 4px; }
 .jds-subtitle { color: var(--text-secondary); font-size: var(--text-sm); }
 .jds-meta { color: var(--text-muted); font-size: var(--text-xs); margin-top: var(--space-2); }
@@ -43,36 +57,36 @@
   transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
 }
 .jds-btn:hover { color: var(--text-primary); box-shadow: var(--shadow-1); transform: translateY(-1px); }
+.jds-btn:active { transform: translateY(0); box-shadow: none; }
 .jds-btn:focus-visible { outline: 2px solid var(--series-1); outline-offset: 2px; }
 .jds-btn-primary { background: var(--series-1); border-color: var(--series-1); color: #fff; }
 .jds-btn-primary:hover { background: var(--seq-500); border-color: var(--seq-500); color: #fff; }
 
 .jds-card {
   background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
-  padding: var(--space-5) var(--space-6); box-shadow: var(--shadow-1);
+  padding: var(--space-4); box-shadow: var(--shadow-1);
 }
 .jds-card + .jds-card { margin-top: var(--space-4); }
 .jds-card h2 { font-size: var(--text-md); font-weight: 650; letter-spacing: -0.006em; margin-bottom: 2px; }
-.jds-card-note { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.55; margin-bottom: var(--space-4); max-width: 68ch; }
+.jds-card-note { font-size: 1rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: var(--space-4); max-width: 68ch; }
 .jds-card-note:last-child { margin-bottom: 0; }
 .jds-card-head { display: flex; align-items: center; gap: var(--space-2); margin-bottom: 2px; }
 .jds-card-head .jds-icon { color: var(--text-muted); }
 
 .jds-card-secondary {
   background: transparent; border: 1px dashed var(--border); box-shadow: none;
-  padding: var(--space-4) var(--space-5);
 }
 .jds-card-secondary h2 { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 650; }
 .jds-card-secondary .jds-card-head .jds-icon { width: 15px; height: 15px; }
 
 .jds-alert {
-  display: flex; gap: var(--space-4); align-items: flex-start;
-  border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);
+  display: flex; gap: var(--space-3); align-items: flex-start;
+  border-radius: var(--radius-lg); padding: var(--space-4);
   border: 1px solid var(--border); background: var(--surface-1);
 }
 .jds-alert-icon { flex: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .jds-alert-title { font-size: var(--text-sm); font-weight: 650; margin-bottom: 3px; }
-.jds-alert-body { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.55; max-width: 68ch; }
+.jds-alert-body { font-size: 1rem; color: var(--text-secondary); line-height: 1.55; max-width: 68ch; }
 .jds-alert-good .jds-alert-icon { background: color-mix(in srgb, var(--status-good) 15%, var(--surface-1)); color: var(--status-good-text); }
 .jds-alert-warning .jds-alert-icon { background: color-mix(in srgb, var(--status-warning) 20%, var(--surface-1)); color: var(--status-warning-text); }
 .jds-alert-serious .jds-alert-icon { background: color-mix(in srgb, var(--status-serious) 18%, var(--surface-1)); color: var(--status-serious-text); }
@@ -93,8 +107,8 @@
 .jds-badge-serious .jds-dot { background: var(--status-serious); }
 .jds-badge-critical .jds-dot { background: var(--status-critical); }
 
-.jds-stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
-.jds-stat-tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-4); }
+.jds-stat-row { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+.jds-stat-tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4); }
 .jds-stat-label { font-size: var(--text-2xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: var(--space-2); font-weight: 600; display: flex; align-items: center; gap: 6px; }
 .jds-stat-label .jds-icon { color: var(--text-muted); width: 13px; height: 13px; }
 .jds-stat-value { font-size: var(--text-lg); font-weight: 650; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; font-variant-numeric: proportional-nums; }
@@ -103,9 +117,9 @@
 .jds-stat-delta-bad { color: var(--status-critical-text); }
 .jds-stat-sub { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.5; }
 
-.jds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(var(--space-6) * -1); padding: 0 var(--space-6); }
+.jds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(var(--space-4) * -1); padding: 0 var(--space-4); }
 .jds-table-wrap .jds-table { min-width: 560px; }
-.jds-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.jds-table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
 .jds-table th, .jds-table td { text-align: left; padding: 10px 11px; border-bottom: 1px solid var(--gridline); vertical-align: top; }
 .jds-table th { color: var(--text-muted); font-weight: 650; font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.03em; }
 .jds-table td { color: var(--text-secondary); }
@@ -118,27 +132,30 @@
 .jds-legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
 .jds-legend-swatch.is-pending { background-image: repeating-linear-gradient(135deg, currentColor 0 3px, transparent 3px 6px); opacity: 0.6; }
 
-.jds-range-row { display: grid; grid-template-columns: 200px 1fr 96px; align-items: center; gap: var(--space-3); }
+.jds-range-row { display: grid; grid-template-columns: 1fr; gap: 4px; }
 .jds-range-label { font-size: var(--text-xs); color: var(--text-secondary); }
 .jds-range-label small { display: block; color: var(--text-muted); font-size: var(--text-2xs); margin-top: 2px; }
 .jds-range-track { position: relative; height: 10px; background: var(--gridline); border-radius: 5px; }
-.jds-range-fill { position: absolute; top: 0; height: 10px; border-radius: 5px; background: var(--series-1); cursor: default; }
+.jds-range-fill { position: absolute; top: 0; height: 10px; border-radius: 5px; background: var(--series-1); cursor: default; transition: filter var(--duration-fast) var(--ease-standard); }
+.jds-range-fill:hover, .jds-range-fill:focus-visible { filter: brightness(1.12); }
 .jds-range-fill.is-pending { background: repeating-linear-gradient(135deg, var(--series-1) 0 4px, transparent 4px 8px); opacity: 0.55; }
-.jds-range-value { font-size: var(--text-xs); text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+.jds-range-value { font-size: var(--text-xs); text-align: left; font-variant-numeric: tabular-nums; color: var(--text-primary); }
 
 .jds-bar-track { display: flex; flex-direction: column; gap: var(--space-3); }
-.jds-bar-row { display: grid; grid-template-columns: 140px 1fr 56px; align-items: center; gap: var(--space-3); }
+.jds-bar-row { display: grid; grid-template-columns: 1fr; gap: 4px; }
 .jds-bar-label { font-size: var(--text-xs); color: var(--text-secondary); }
 .jds-bar-track-bg { position: relative; height: 24px; background: var(--gridline); border-radius: 4px; overflow: hidden; }
-.jds-bar-fill { position: absolute; top: 2px; bottom: 2px; left: 0; border-radius: 4px; background: var(--series-1); }
+.jds-bar-fill { position: absolute; top: 2px; bottom: 2px; left: 0; border-radius: 4px; background: var(--series-1); transition: filter var(--duration-fast) var(--ease-standard); }
+.jds-bar-fill:hover, .jds-bar-fill:focus-visible { filter: brightness(1.12); }
 .jds-bar-fill.is-pending { background: repeating-linear-gradient(135deg, var(--series-1) 0 4px, transparent 4px 8px); opacity: 0.55; }
-.jds-bar-value { font-size: var(--text-xs); text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+.jds-bar-value { font-size: var(--text-xs); text-align: left; font-variant-numeric: tabular-nums; color: var(--text-primary); }
 
 .jds-filter-row { display: flex; gap: var(--space-2); margin-bottom: var(--space-5); flex-wrap: wrap; }
 .jds-filter-pill { font-size: var(--text-2xs); font-weight: 600; padding: 6px 12px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary); cursor: pointer; }
 .jds-filter-pill.is-active { background: var(--series-1); border-color: var(--series-1); color: #fff; }
 
-.jds-steps { margin: 0; padding-left: 20px; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.9; max-width: 68ch; }
+.jds-steps { margin: 0; padding-left: 20px; font-size: 1rem; color: var(--text-secondary); line-height: 1.75; max-width: 68ch; }
+.jds-steps li + li { margin-top: 8px; }
 .jds-steps b { color: var(--text-primary); }
 
 .jds-sources { font-size: var(--text-2xs); color: var(--text-muted); line-height: 1.9; }
@@ -154,19 +171,23 @@
 
 .jds-empty { text-align: center; padding: var(--space-10) var(--space-5); color: var(--text-muted); font-size: var(--text-sm); }
 
-@media (max-width: 760px) {
-  .jds-shell { padding-top: var(--space-6); padding-bottom: var(--space-10); }
-  .jds-row-between.jds-topbar { flex-direction: column; align-items: stretch; gap: var(--space-3); }
-  .jds-row-between.jds-topbar > button { align-self: flex-start; }
+@media (min-width: 481px) {
   .jds-stat-row { grid-template-columns: repeat(2, 1fr); }
-  .jds-card { padding: var(--space-4); }
-  .jds-range-row, .jds-bar-row { grid-template-columns: 1fr; gap: 4px; }
-  .jds-range-value, .jds-bar-value { text-align: left; }
-  .jds-table { font-size: var(--text-xs); }
-  .jds-table-wrap { margin: 0 calc(var(--space-4) * -1); padding: 0 var(--space-4); }
-  .jds-card-note, .jds-alert-body, .jds-steps { font-size: 1rem; }
 }
 
-@media (max-width: 480px) {
-  .jds-stat-row { grid-template-columns: 1fr; }
+@media (min-width: 761px) {
+  .jds-shell { padding: var(--space-8) var(--shell-pad-x) var(--space-12); }
+  .jds-topbar.jds-row-between { flex-direction: row; align-items: flex-start; }
+  .jds-topbar.jds-row-between > button { align-self: auto; }
+  .jds-card { padding: var(--space-5) var(--space-6); }
+  .jds-card-secondary { padding: var(--space-4) var(--space-5); }
+  .jds-alert { padding: var(--space-4) var(--space-5); gap: var(--space-4); }
+  .jds-stat-row { grid-template-columns: repeat(4, 1fr); }
+  .jds-grid-2 { grid-template-columns: 1fr 1fr; }
+  .jds-range-row { grid-template-columns: 200px 1fr 96px; align-items: center; gap: var(--space-3); }
+  .jds-bar-row { grid-template-columns: 140px 1fr 56px; align-items: center; gap: var(--space-3); }
+  .jds-range-value, .jds-bar-value { text-align: right; }
+  .jds-table { font-size: var(--text-sm); }
+  .jds-table-wrap { margin: 0 calc(var(--space-6) * -1); padding: 0 var(--space-6); }
+  .jds-card-note, .jds-alert-body, .jds-steps { font-size: var(--text-sm); }
 }
