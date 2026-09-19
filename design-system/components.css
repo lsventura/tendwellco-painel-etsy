@@ -5,11 +5,7 @@
   Layout escrito MOBILE-FIRST (regra #64 do catálogo ui-ux-pro-max e consenso
   de fóruns/Smashing Magazine, 19/09/2026): o estado-base de toda regra de
   layout é o celular; @media (min-width: ...) ACRESCENTA colunas/espaço pra
-  telas maiores — nunca o contrário. Densidade de desktop segue o estilo
-  "Data-Dense Dashboard" (BI/Analytics) do catálogo: grid eficiente, padding
-  mínimo, cards compactos, máxima densidade de informação sem virar bagunça —
-  esse estilo é explicitamente "mobile-friendly: condicional", por isso o
-  celular tem seu próprio conjunto de regras, não é o desktop encolhido.
+  telas maiores — nunca o contrário.
 */
 
 .jds-root, .jds-root * { box-sizing: border-box; }
@@ -79,6 +75,9 @@
 .jds-card-secondary h2 { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 650; }
 .jds-card-secondary .jds-card-head .jds-icon { width: 15px; height: 15px; }
 
+.jds-card-opportunity { border-top: 3px solid var(--series-3); }
+.jds-card-opportunity .jds-card-head .jds-icon { color: var(--series-3); }
+
 .jds-alert {
   display: flex; gap: var(--space-3); align-items: flex-start;
   border-radius: var(--radius-lg); padding: var(--space-4);
@@ -126,6 +125,20 @@
 .jds-table td.jds-cell-name { color: var(--text-primary); font-weight: 600; }
 .jds-table td.jds-cell-num { font-variant-numeric: tabular-nums; text-align: right; }
 .jds-table tbody tr:hover td { background: color-mix(in srgb, var(--series-1) 5%, transparent); }
+.jds-table tbody tr[data-status] td:first-child { border-left: 3px solid transparent; padding-left: 9px; }
+.jds-table tbody tr[data-status="good"] td:first-child { border-left-color: var(--status-good); }
+.jds-table tbody tr[data-status="warning"] td:first-child { border-left-color: var(--status-warning); }
+.jds-table tbody tr[data-status="serious"] td:first-child { border-left-color: var(--status-serious); }
+.jds-table tbody tr[data-status="critical"] td:first-child { border-left-color: var(--status-critical); }
+
+.jds-copy-btn {
+  display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-sans);
+  font-size: var(--text-2xs); font-weight: 600; padding: 5px 10px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary); cursor: pointer;
+  white-space: nowrap; transition: background var(--duration-fast) var(--ease-standard);
+}
+.jds-copy-btn:hover { color: var(--text-primary); border-color: var(--series-1); }
+.jds-copy-btn.is-copied { color: var(--status-good-text); border-color: var(--status-good); }
 
 .jds-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); font-size: var(--text-xs); color: var(--text-secondary); }
 .jds-legend-item { display: inline-flex; align-items: center; gap: 6px; }
@@ -151,7 +164,10 @@
 .jds-bar-value { font-size: var(--text-xs); text-align: left; font-variant-numeric: tabular-nums; color: var(--text-primary); }
 
 .jds-filter-row { display: flex; gap: var(--space-2); margin-bottom: var(--space-5); flex-wrap: wrap; }
-.jds-filter-pill { font-size: var(--text-2xs); font-weight: 600; padding: 6px 12px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary); cursor: pointer; }
+.jds-filter-pill {
+  font-size: var(--text-2xs); font-weight: 600; padding: 6px 12px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary); cursor: pointer;
+}
 .jds-filter-pill.is-active { background: var(--series-1); border-color: var(--series-1); color: #fff; }
 
 .jds-steps { margin: 0; padding-left: 20px; font-size: 1rem; color: var(--text-secondary); line-height: 1.75; max-width: 68ch; }

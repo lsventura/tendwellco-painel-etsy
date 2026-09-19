@@ -17,6 +17,9 @@
     search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
     tag: '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>',
     lock: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+    check2: '<path d="M20 6 9 17l-5-5"/>',
+    sparkle: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>',
   };
   function icon(name, cls) {
     var span = document.createElement("span");
@@ -83,6 +86,25 @@
     el.addEventListener("mouseleave", hideTooltip);
     el.addEventListener("focus", function (e) { showTooltip(e, title, detail); });
     el.addEventListener("blur", hideTooltip);
+  }
+
+  function copyText(text, button) {
+    var originalHTML = button.innerHTML;
+    function done() {
+      button.textContent = "";
+      button.appendChild(icon("check2", "jds-icon-sm"));
+      button.appendChild(document.createTextNode(" Copiado"));
+      button.classList.add("is-copied");
+      setTimeout(function () {
+        button.innerHTML = originalHTML;
+        button.classList.remove("is-copied");
+      }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else {
+      done();
+    }
   }
 
   function badge(status, label) {
@@ -166,16 +188,30 @@
     });
   }
 
-  function renderTable(tbody, rows, columns) {
+  function renderTable(tbody, rows, columns, opts) {
+    opts = opts || {};
     tbody.textContent = "";
     rows.forEach(function (row) {
       var tr = document.createElement("tr");
+      if (opts.statusAttr && row[opts.statusAttr]) tr.dataset.status = row[opts.statusAttr];
       columns.forEach(function (col) {
         var td = document.createElement("td");
         if (col.type === "name") td.className = "jds-cell-name";
         if (col.type === "num") td.className = "jds-cell-num";
         if (col.type === "badge") {
           td.appendChild(badge(row[col.key + "Status"], row[col.key]));
+        } else if (col.type === "copy") {
+          if (row[col.key]) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "jds-copy-btn";
+            btn.appendChild(icon("copy", "jds-icon-sm"));
+            btn.appendChild(document.createTextNode(" Copiar título"));
+            (function (text, b) { b.addEventListener("click", function () { copyText(text, b); }); })(row[col.key], btn);
+            td.appendChild(btn);
+          } else {
+            td.textContent = "—";
+          }
         } else {
           td.textContent = row[col.key];
         }
@@ -185,5 +221,19 @@
     });
   }
 
-  global.jds = { initThemeToggle: initThemeToggle, showTooltip: showTooltip, moveTooltip: moveTooltip, hideTooltip: hideTooltip, attachTooltip: attachTooltip, badge: badge, icon: icon, renderRangeChart: renderRangeChart, renderBarChart: renderBarChart, renderTable: renderTable };
+  function wireStatusFilter(filterRow, tbody) {
+    var pills = filterRow.querySelectorAll(".jds-filter-pill");
+    pills.forEach(function (pill) {
+      pill.addEventListener("click", function () {
+        pills.forEach(function (p) { p.classList.remove("is-active"); });
+        pill.classList.add("is-active");
+        var filter = pill.dataset.filter;
+        tbody.querySelectorAll("tr").forEach(function (tr) {
+          tr.style.display = filter === "all" || tr.dataset.status === filter ? "" : "none";
+        });
+      });
+    });
+  }
+
+  global.jds = { initThemeToggle: initThemeToggle, showTooltip: showTooltip, moveTooltip: moveTooltip, hideTooltip: hideTooltip, attachTooltip: attachTooltip, badge: badge, icon: icon, copyText: copyText, renderRangeChart: renderRangeChart, renderBarChart: renderBarChart, renderTable: renderTable, wireStatusFilter: wireStatusFilter };
 })(window);

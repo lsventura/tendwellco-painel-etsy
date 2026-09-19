@@ -11,7 +11,7 @@
 </style>
 </head>
 <body class="jds-root">
-<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v1 — 19/09/2026 — se esse número mudar quando eu avisar, o deploy chegou</div>
+<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v2 — 19/09/2026 — filtro, botão de copiar e mais oportunidades</div>
 <div class="jds-shell">
 
   <div class="jds-row-between jds-topbar">
@@ -48,7 +48,7 @@
     <div class="jds-stat-tile">
       <div class="jds-stat-label" data-icon="tag">Posicionamento corrigido</div>
       <div class="jds-stat-value">$5–$9 por peça</div>
-      <div class="jds-stat-sub">Preço mediano real do nicho — não $18-28 como eu tinha estimado antes. Ver gráfico abaixo.</div>
+      <div class="jds-stat-sub">Preço mediano real do nicho — não $18-28 como eu tinha estimado antes.</div>
     </div>
     <div class="jds-stat-tile">
       <div class="jds-stat-label" data-icon="clock">Bloqueio de venda</div>
@@ -65,7 +65,13 @@
       <span class="jds-legend-item"><span class="jds-legend-swatch" style="background:var(--series-1)"></span>Mediano real observado</span>
       <span class="jds-legend-item"><span class="jds-legend-swatch is-pending" style="color:var(--series-1)"></span>Nosso kit (sugestão, ainda não listado)</span>
     </div>
-    <p class="jds-card-note" style="margin-top:var(--space-5)">Todas as variações abaixo vendem pra o mesmo comprador — a diferença é só quanta concorrência cada título carrega.</p>
+    <p class="jds-card-note" style="margin-top:var(--space-5)">Todas as variações abaixo vendem pra o mesmo comprador — a diferença é só quanta concorrência cada título carrega. Filtra por status, e copia o título já pronto pra colar no Etsy.</p>
+    <div class="jds-filter-row" id="keyword-filter">
+      <button class="jds-filter-pill is-active" data-filter="all" type="button">Todos</button>
+      <button class="jds-filter-pill" data-filter="good" type="button">Validado</button>
+      <button class="jds-filter-pill" data-filter="warning" type="button">Atenção</button>
+      <button class="jds-filter-pill" data-filter="critical" type="button">Evitar</button>
+    </div>
     <div class="jds-table-wrap">
     <table class="jds-table">
       <thead>
@@ -75,9 +81,31 @@
           <th>Concorrência</th>
           <th>Tendência 12m</th>
           <th>Ação recomendada</th>
+          <th>Título pronto</th>
         </tr>
       </thead>
       <tbody id="keyword-table-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="jds-card jds-card-opportunity">
+    <div class="jds-card-head"><span id="head-icon-opportunity"></span><h2>Mais oportunidades — nichos novos pesquisados agora</h2></div>
+    <p class="jds-card-note">Candidatos a nova listagem usando o mesmo motor (<code>gerador.mjs</code>) — dado real extraído em 19/09/2026, mesma fonte da tabela acima. "Blood pressure log" foi o melhor sinal de volume de toda a pesquisa até agora.</p>
+    <div class="jds-table-wrap">
+    <table class="jds-table">
+      <thead>
+        <tr>
+          <th>Nicho</th>
+          <th>Buscas/mês</th>
+          <th>Concorrência</th>
+          <th>Preço mediano</th>
+          <th>Tendência 12m</th>
+          <th>Veredito</th>
+          <th>Título pronto</th>
+        </tr>
+      </thead>
+      <tbody id="opportunity-table-body"></tbody>
     </table>
     </div>
   </div>
@@ -86,20 +114,21 @@
     <div class="jds-card-head"><span id="head-icon-steps"></span><h2>Próximos passos (em ordem, atualizado 19/09)</h2></div>
     <ol class="jds-steps">
       <li><b>Acompanhar o retorno do Payoneer</b> — já foi enviado tudo que pediram, agora é aguardar a confirmação pra sair do Vacation Mode.</li>
-      <li><b>Quebrar o kit de 78 páginas em listagens individuais</b> de $5-9 cada, com título batendo exato no termo de busca ("Pill Tracker", "Caregiver Planner", "Medicine Tracker") — o preço mediano real do nicho é aí, não em $18-28.</li>
-      <li><b>Priorizar "pill tracker" como primeira listagem</b> — melhor sinal de tudo que pesquisei: cresceu 60% em 12 meses, dificuldade "fácil" (20/100), poucos anúncios concorrendo.</li>
-      <li><b>"Caregiver Planner" em segundo</b> — crescimento de +55% em 12 meses, já é a nossa variação Cuidador.</li>
+      <li><b>Quebrar o kit de 78 páginas em listagens individuais</b> de $5-9 cada, com título batendo exato no termo de busca — o preço mediano real do nicho é aí, não em $18-28.</li>
+      <li><b>Priorizar "pill tracker" como primeira listagem</b> — melhor sinal do lote original: cresceu 60% em 12 meses, dificuldade "fácil" (20/100), poucos anúncios concorrendo.</li>
+      <li><b>"Blood pressure log" entra na frente da fila de produção nova</b> — 12.100 buscas/mês (o maior volume que já vi), dificuldade "fácil" (18/100). Preço baixo ($2,46 mediano), então serve pra atrair tráfego, não pra margem — bom gancho pra vender o bundle completo junto.</li>
+      <li><b>"Caregiver Planner" em seguida</b> — crescimento de +55% em 12 meses, já é a nossa variação Cuidador.</li>
       <li><b>Oferecer o kit completo de 78 páginas como upsell/bundle</b> pra quem já comprou uma peça avulsa, não como produto de entrada.</li>
-      <li><b>ADHD planner só a partir de outubro</b> — maior volume de todos (14.800/mês), mas também o mais concorrido (68-75 mil anúncios); o pico é dezembro-janeiro, então lançar cedo o suficiente pra ranquear antes do pico.</li>
-      <li><b>Não liderar com "symptom tracker"</b> — caiu 34% em 12 meses apesar de parecer quente num anúncio isolado. E abandonar "caregiver organizer" como tag — só 10 buscas/mês.</li>
-      <li><b>Não expandir agora</b> pra wall art, casamento ou templates Canva — demanda alta, mas exigem um motor de produção diferente do que já temos.</li>
+      <li><b>ADHD planner só a partir de outubro</b> — maior volume dos nichos ADHD/planner (14.800/mês), mas também o mais concorrido (68-75 mil anúncios); pico é dezembro-janeiro.</li>
+      <li><b>Não liderar com "symptom tracker" nem "postpartum planner"</b> — os dois caíram em busca nos últimos 12 meses (-34% e -19%). E abandonar "caregiver organizer" como tag — só 10 buscas/mês.</li>
+      <li><b>"Elderly care planner" precisa de mais pesquisa</b> antes de produzir — tem concorrência real (1.347 anúncios, preço mediano $7,49) mas a ferramenta não devolveu volume de busca confiável ainda.</li>
     </ol>
   </div>
 
   <div class="jds-grid-2">
   <div class="jds-card jds-card-secondary">
     <div class="jds-card-head"><span id="head-icon-niche"></span><h2>Referência: nichos mais amplos fora do nosso foco</h2></div>
-    <p class="jds-card-note">Pra decidir onde <b>não</b> vale a pena expandir agora — cruzando demanda geral do Etsy com o que nosso motor (<code>gerador.mjs</code> + <code>montar-pdf.mjs</code>) já sabe produzir.</p>
+    <p class="jds-card-note">Pra decidir onde <b>não</b> vale a pena expandir agora — cruzando demanda geral do Etsy com o que nosso motor já sabe produzir.</p>
     <div class="jds-table-wrap">
     <table class="jds-table">
       <thead>
@@ -120,17 +149,17 @@
   <div class="jds-card jds-card-secondary">
     <div class="jds-card-head"><span id="head-icon-update"></span><h2>Referência: como manter esse painel atualizado</h2></div>
     <p class="jds-card-note">
-      Não existe API pública de "mais vendidos" do Etsy — a Etsy Open API v3 não expõe contagem de vendas por concorrente, e o app já cadastrado (chave em <code>etsy/.env</code>) nunca completou o fluxo OAuth (sem token salvo em <code>etsy/.oauth_state.json</code>), então hoje não dá pra puxar nem os dados da nossa própria loja automaticamente.
-      Os números de busca/concorrência acima vieram de ferramentas de keyword research (rankhero, mesma família de dado do eRank) — essas eu consigo repetir por pesquisa quando pedir, a cada 4-6 semanas ou antes de lançar uma listagem nova.
+      Não existe API pública de "mais vendidos" do Etsy — a Etsy Open API v3 não expõe contagem de vendas por concorrente, e o app já cadastrado (chave em <code>etsy/.env</code>) nunca completou o fluxo OAuth, então hoje não dá pra puxar nem os dados da nossa própria loja automaticamente.
+      Os números de busca/concorrência vêm de ferramentas de keyword research (rankhero, mesma família de dado do eRank) — essas eu consigo repetir por pesquisa quando pedir, a cada 4-6 semanas ou antes de lançar uma listagem nova.
     </p>
     <div class="jds-sources">
       Fontes desta rodada (19/09/2026):<br>
       <a href="https://www.rankhero.com/keywords/caregiver-planner" target="_blank" rel="noopener">Caregiver Planner — RankHero</a><br>
-      <a href="https://www.rankhero.com/keywords/caregiver-organizer" target="_blank" rel="noopener">Caregiver Organizer — RankHero</a><br>
+      <a href="https://www.rankhero.com/keywords/postpartum-planner" target="_blank" rel="noopener">Postpartum Planner — RankHero</a><br>
+      <a href="https://www.rankhero.com/keywords/elderly-care-planner" target="_blank" rel="noopener">Elderly Care Planner — RankHero</a><br>
+      <a href="https://www.rankhero.com/keywords/blood-pressure-log" target="_blank" rel="noopener">Blood Pressure Log — RankHero</a><br>
       <a href="https://help.erank.com/blog/top-etsy-searches-q1-2026/" target="_blank" rel="noopener">Top Etsy Searches Q1 2026 — eRank</a><br>
-      <a href="https://blog.marmalead.com/etsy-search-trends/" target="_blank" rel="noopener">Rising Etsy Search Trends — Marmalead</a><br>
-      <a href="https://www.etsy.com/market/medication_tracker" target="_blank" rel="noopener">Medication Tracker — mercado Etsy</a><br>
-      <a href="https://www.etsy.com/listing/1625082585/editable-medication-tracker-printable" target="_blank" rel="noopener">Editable Medication Tracker (planNgo, 668 avaliações) — Etsy</a>
+      <a href="https://www.etsy.com/market/medication_tracker" target="_blank" rel="noopener">Medication Tracker — mercado Etsy</a>
     </div>
   </div>
   </div>
@@ -143,6 +172,7 @@
   document.getElementById('brand-icon').appendChild(jds.icon('package'));
   document.getElementById('alert-icon').appendChild(jds.icon('clock'));
   document.getElementById('head-icon-price').appendChild(jds.icon('tag', 'jds-icon-lg'));
+  document.getElementById('head-icon-opportunity').appendChild(jds.icon('sparkle', 'jds-icon-lg'));
   document.getElementById('head-icon-niche').appendChild(jds.icon('package', 'jds-icon-lg'));
   document.getElementById('head-icon-steps').appendChild(jds.icon('check', 'jds-icon-lg'));
   document.getElementById('head-icon-update').appendChild(jds.icon('info', 'jds-icon-lg'));
@@ -152,21 +182,22 @@
   });
 
   jds.renderBarChart(document.getElementById('price-chart'), [
+    { label: 'blood pressure log', value: 2.46, pending: false, detail: 'Mediano real — 12.100 buscas/mês, o maior volume já pesquisado, mas preço-commodity.' },
     { label: 'medication tracker', value: 4.25, pending: false, detail: 'Mediano real — 10.836 anúncios concorrendo, alta saturação.' },
     { label: 'symptom tracker', value: 5.81, pending: false, detail: 'Mediano real — mas busca caiu 34% em 12 meses, evitar como termo principal.' },
     { label: 'caregiver planner', value: 7.00, pending: false, detail: 'Mediano real — busca subiu 55% em 12 meses, nossa melhor aposta de crescimento.' },
-    { label: 'ADHD planner', value: 8.54, pending: false, detail: 'Mediano real — maior volume (14.800/mês), mas também mais concorrido (68-75 mil anúncios).' },
+    { label: 'ADHD planner', value: 8.54, pending: false, detail: 'Mediano real — maior volume de planner (14.800/mês), mas também mais concorrido.' },
     { label: 'nosso kit (78 pág., por peça)', value: 6.50, pending: true, detail: 'Sugestão corrigida — cada listagem individual do kit vendida separada, dentro da faixa mediana real do nicho.' },
   ], { max: 10, prefix: '$' });
 
   var keywords = [
-    { termo: 'pill tracker', buscas: '1.300 → 1.600', concorrencia: '~1.700 (baixa)', tendencia: '+60% em 12m', acao: 'Título principal da 1ª listagem nova', acaoStatus: 'good' },
-    { termo: 'caregiver planner', buscas: '—', concorrencia: '4.533 (moderada)', tendencia: '+55% em 12m', acao: 'Título principal da 2ª listagem (Cuidador)', acaoStatus: 'good' },
-    { termo: 'medicine tracker', buscas: '1.600', concorrencia: '2.785 (baixa)', tendencia: 'estável, pico jan/26', acao: 'Usar como tag secundária', acaoStatus: 'good' },
-    { termo: 'medication tracker', buscas: '1.600', concorrencia: '10.836 (alta)', tendencia: 'estável', acao: 'Manter como tag, não como título líder', acaoStatus: 'warning' },
-    { termo: 'ADHD planner', buscas: '14.800 (pico 22.200 dez/jan)', concorrencia: '68-75 mil (muito alta)', tendencia: 'sazonal forte', acao: 'Lançar em out/nov pra pegar o pico', acaoStatus: 'warning' },
-    { termo: 'symptom tracker', buscas: '4.400 → 2.900', concorrencia: '12.423 (alta)', tendencia: '-34% em 12m', acao: 'Evitar como termo principal', acaoStatus: 'critical' },
-    { termo: 'caregiver organizer', buscas: '10/mês', concorrencia: '—', tendencia: 'irrelevante', acao: 'Não usar', acaoStatus: 'critical' },
+    { termo: 'pill tracker', buscas: '1.300 → 1.600', concorrencia: '~1.700 (baixa)', tendencia: '+60% em 12m', acao: 'Título principal da 1ª listagem nova', acaoStatus: 'good', titulo: 'Pill Tracker Printable | Daily Medicine Log, Dose Reminder & Weekly Schedule | Digital Download PDF' },
+    { termo: 'caregiver planner', buscas: '—', concorrencia: '4.533 (moderada)', tendencia: '+55% em 12m', acao: 'Título principal da 2ª listagem (Cuidador)', acaoStatus: 'good', titulo: 'Caregiver Planner Printable | Medication Log, Appointment Tracker & Daily Care Journal | Digital Download PDF' },
+    { termo: 'medicine tracker', buscas: '1.600', concorrencia: '2.785 (baixa)', tendencia: 'estável, pico jan/26', acao: 'Usar como tag secundária', acaoStatus: 'good', titulo: null },
+    { termo: 'medication tracker', buscas: '1.600', concorrencia: '10.836 (alta)', tendencia: 'estável', acao: 'Manter como tag, não como título líder', acaoStatus: 'warning', titulo: null },
+    { termo: 'ADHD planner', buscas: '14.800 (pico 22.200 dez/jan)', concorrencia: '68-75 mil (muito alta)', tendencia: 'sazonal forte', acao: 'Lançar em out/nov pra pegar o pico', acaoStatus: 'warning', titulo: null },
+    { termo: 'symptom tracker', buscas: '4.400 → 2.900', concorrencia: '12.423 (alta)', tendencia: '-34% em 12m', acao: 'Evitar como termo principal', acaoStatus: 'critical', titulo: null },
+    { termo: 'caregiver organizer', buscas: '10/mês', concorrencia: '—', tendencia: 'irrelevante', acao: 'Não usar', acaoStatus: 'critical', titulo: null },
   ];
   jds.renderTable(document.getElementById('keyword-table-body'), keywords, [
     { key: 'termo', type: 'name' },
@@ -174,7 +205,24 @@
     { key: 'concorrencia', type: 'text' },
     { key: 'tendencia', type: 'text' },
     { key: 'acao', type: 'badge' },
-  ]);
+    { key: 'titulo', type: 'copy' },
+  ], { statusAttr: 'acaoStatus' });
+  jds.wireStatusFilter(document.getElementById('keyword-filter'), document.getElementById('keyword-table-body'));
+
+  var opportunities = [
+    { nome: 'Blood Pressure Log', buscas: '12.100', concorrencia: '~1.900 (baixa p/ o volume)', preco: '$2,46 mediano', tendencia: 'estável, pico mar/26', veredito: 'Prioridade máxima', veredictoStatus: 'good', titulo: 'Blood Pressure Log Printable | Daily BP & Heart Rate Tracker, Health Journal | Digital Download PDF' },
+    { nome: 'Postpartum Planner', buscas: '590', concorrencia: '1.556 (média)', preco: 'Não coletado', tendencia: '-19% em 12m', veredito: 'Não priorizar agora', veredictoStatus: 'critical', titulo: null },
+    { nome: 'Elderly Care Planner', buscas: 'Sem dado confiável', concorrencia: '1.347 (moderada)', preco: '$7,49 mediano', tendencia: 'Sem dado', veredito: 'Validar melhor antes de produzir', veredictoStatus: 'warning', titulo: null },
+  ];
+  jds.renderTable(document.getElementById('opportunity-table-body'), opportunities, [
+    { key: 'nome', type: 'name' },
+    { key: 'buscas', type: 'text' },
+    { key: 'concorrencia', type: 'text' },
+    { key: 'preco', type: 'text' },
+    { key: 'tendencia', type: 'text' },
+    { key: 'veredito', type: 'badge' },
+    { key: 'titulo', type: 'copy' },
+  ], { statusAttr: 'veredictoStatus' });
 
   var niches = [
     { nome: 'Medication / Health Tracker (nosso)', demanda: 'Alta', demandaStatus: 'good', preco: '$4,25 mediano · pico $23,99', competicao: 'Média-Alta', produzimos: 'Sim — 5 variações prontas', veredito: 'Validado, reprecificar', veredictoStatus: 'good' },
