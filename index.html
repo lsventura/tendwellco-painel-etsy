@@ -11,7 +11,7 @@
 </style>
 </head>
 <body class="jds-root">
-<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v3 — 19/09/2026 — layout de dashboard (2 colunas), não empilhado</div>
+<div style="background:#111;color:#fff;padding:10px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">VERSÃO DO PAINEL: v4 — 19/09/2026 — painel gerenciador com abas, não rolagem única</div>
 <div class="jds-shell">
 
   <div class="jds-row-between jds-topbar">
@@ -57,9 +57,15 @@
     </div>
   </div>
 
-  <div class="jds-dashboard">
-  <div class="jds-dashboard-main">
+  <div class="jds-tabs" id="main-tabs" role="tablist">
+    <button class="jds-tab-btn is-active" data-tab="demanda" type="button"><span id="tab-icon-demanda"></span>Demanda</button>
+    <button class="jds-tab-btn" data-tab="oportunidades" type="button"><span id="tab-icon-oportunidades"></span>Oportunidades</button>
+    <button class="jds-tab-btn" data-tab="nichos" type="button"><span id="tab-icon-nichos"></span>Nichos amplos</button>
+    <button class="jds-tab-btn" data-tab="passos" type="button"><span id="tab-icon-passos"></span>Próximos passos</button>
+    <button class="jds-tab-btn" data-tab="sobre" type="button"><span id="tab-icon-sobre"></span>Sobre o painel</button>
+  </div>
 
+  <div data-tab-panel="demanda">
   <div class="jds-card">
     <div class="jds-card-head"><span id="head-icon-price"></span><h2>Validação de demanda real — preço e palavra-chave</h2></div>
     <p class="jds-card-note">Dado extraído direto de ferramenta de keyword research do Etsy (rankhero, mesma fonte que o eRank) em 19/09/2026 — não é estimativa de artigo genérico.</p>
@@ -91,7 +97,9 @@
     </table>
     </div>
   </div>
+  </div>
 
+  <div data-tab-panel="oportunidades" hidden>
   <div class="jds-card jds-card-opportunity">
     <div class="jds-card-head"><span id="head-icon-opportunity"></span><h2>Mais oportunidades — nichos novos pesquisados agora</h2></div>
     <p class="jds-card-note">Candidatos a nova listagem usando o mesmo motor (<code>gerador.mjs</code>) — dado real extraído em 19/09/2026, mesma fonte da tabela acima. "Blood pressure log" foi o melhor sinal de volume de toda a pesquisa até agora.</p>
@@ -112,7 +120,9 @@
     </table>
     </div>
   </div>
+  </div>
 
+  <div data-tab-panel="nichos" hidden>
   <div class="jds-card jds-card-secondary">
     <div class="jds-card-head"><span id="head-icon-niche"></span><h2>Referência: nichos mais amplos fora do nosso foco</h2></div>
     <p class="jds-card-note">Pra decidir onde <b>não</b> vale a pena expandir agora — cruzando demanda geral do Etsy com o que nosso motor já sabe produzir.</p>
@@ -132,10 +142,9 @@
     </table>
     </div>
   </div>
-
   </div>
-  <div class="jds-dashboard-side">
 
+  <div data-tab-panel="passos" hidden>
   <div class="jds-card">
     <div class="jds-card-head"><span id="head-icon-steps"></span><h2>Próximos passos (em ordem, atualizado 19/09)</h2></div>
     <ol class="jds-steps">
@@ -150,7 +159,9 @@
       <li><b>"Elderly care planner" precisa de mais pesquisa</b> antes de produzir — tem concorrência real (1.347 anúncios, preço mediano $7,49) mas a ferramenta não devolveu volume de busca confiável ainda.</li>
     </ol>
   </div>
+  </div>
 
+  <div data-tab-panel="sobre" hidden>
   <div class="jds-card jds-card-secondary">
     <div class="jds-card-head"><span id="head-icon-update"></span><h2>Referência: como manter esse painel atualizado</h2></div>
     <p class="jds-card-note">
@@ -168,7 +179,6 @@
     </div>
   </div>
   </div>
-  </div>
 
 </div>
 
@@ -182,6 +192,12 @@
   document.getElementById('head-icon-niche').appendChild(jds.icon('package', 'jds-icon-lg'));
   document.getElementById('head-icon-steps').appendChild(jds.icon('check', 'jds-icon-lg'));
   document.getElementById('head-icon-update').appendChild(jds.icon('info', 'jds-icon-lg'));
+  document.getElementById('tab-icon-demanda').appendChild(jds.icon('tag', 'jds-icon-sm'));
+  document.getElementById('tab-icon-oportunidades').appendChild(jds.icon('sparkle', 'jds-icon-sm'));
+  document.getElementById('tab-icon-nichos').appendChild(jds.icon('package', 'jds-icon-sm'));
+  document.getElementById('tab-icon-passos').appendChild(jds.icon('check', 'jds-icon-sm'));
+  document.getElementById('tab-icon-sobre').appendChild(jds.icon('info', 'jds-icon-sm'));
+  jds.wireTabs(document.getElementById('main-tabs'));
 
   document.querySelectorAll('.jds-stat-label[data-icon]').forEach(function (el) {
     el.insertBefore(jds.icon(el.dataset.icon), el.firstChild);

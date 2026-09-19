@@ -235,5 +235,17 @@
     });
   }
 
-  global.jds = { initThemeToggle: initThemeToggle, showTooltip: showTooltip, moveTooltip: moveTooltip, hideTooltip: hideTooltip, attachTooltip: attachTooltip, badge: badge, icon: icon, copyText: copyText, renderRangeChart: renderRangeChart, renderBarChart: renderBarChart, renderTable: renderTable, wireStatusFilter: wireStatusFilter };
+  function wireTabs(tabsEl) {
+    var buttons = tabsEl.querySelectorAll(".jds-tab-btn");
+    var panels = document.querySelectorAll("[data-tab-panel]");
+    function activate(tab) {
+      buttons.forEach(function (b) { b.classList.toggle("is-active", b.dataset.tab === tab); });
+      panels.forEach(function (p) { p.hidden = p.dataset.tabPanel !== tab; });
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () { activate(btn.dataset.tab); });
+    });
+  }
+
+  global.jds = { initThemeToggle: initThemeToggle, showTooltip: showTooltip, moveTooltip: moveTooltip, hideTooltip: hideTooltip, attachTooltip: attachTooltip, badge: badge, icon: icon, copyText: copyText, renderRangeChart: renderRangeChart, renderBarChart: renderBarChart, renderTable: renderTable, wireStatusFilter: wireStatusFilter, wireTabs: wireTabs };
 })(window);

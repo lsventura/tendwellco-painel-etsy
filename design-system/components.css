@@ -44,6 +44,19 @@
 .jds-dashboard-main > .jds-card + .jds-card,
 .jds-dashboard-side > .jds-card + .jds-card { margin-top: 0; }
 
+.jds-tabs { display: flex; gap: var(--space-2); overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--space-4) 0; padding-bottom: 2px; }
+.jds-tab-btn {
+  flex: none; display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 650;
+  padding: 9px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border);
+  background: var(--surface-1); color: var(--text-secondary); cursor: pointer; white-space: nowrap;
+  transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+.jds-tab-btn:hover { color: var(--text-primary); }
+.jds-tab-btn.is-active { background: var(--series-1); border-color: var(--series-1); color: #fff; }
+.jds-tab-btn.is-active .jds-icon { stroke: #fff; }
+[data-tab-panel][hidden] { display: none; }
+
 .jds-topbar { margin-bottom: var(--space-6); }
 .jds-topbar.jds-row-between { flex-direction: column; align-items: stretch; gap: var(--space-3); }
 .jds-topbar.jds-row-between > button { align-self: flex-start; }
